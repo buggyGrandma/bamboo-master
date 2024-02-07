@@ -1,0 +1,13 @@
+{
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "never"
+	},
+	"tailwindCSS.experimental.classRegex": [
+		["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+		["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+	],
+	"editor.wordWrap": "wordWrapColumn",
+	"editor.wordWrapColumn": 100,
+	"typescript.tsdk": "node_modules\\typescript\\lib",
+	"compile-hero.disable-compile-files-on-did-save-code": true
+}
