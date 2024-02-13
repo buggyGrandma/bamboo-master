@@ -1,11 +1,14 @@
 "use client"
 import useEmblaCarousel from "embla-carousel-react"
-import Image from "next/image"
 import { useCallback, useEffect, useState } from "react"
 import { flushSync } from "react-dom"
 import { cn } from "~/lib/utils"
-import SliderImage from "../../public/slider1.png"
+import { AXIOS } from "../../axios.config"
 
+interface Input {
+	action: string
+	filePath: string
+}
 export default function MainCarousel() {
 	const [emblaRef, emblaApi] = useEmblaCarousel({
 		loop: true,
@@ -59,14 +62,20 @@ export default function MainCarousel() {
 		})
 		emblaApi.on("reInit", onScroll)
 	}, [emblaApi, onScroll])
-
+	const [inputs, setInputs] = useState<Input[]>([] as Input[])
+	useEffect(() => {
+		AXIOS.get("banner").then((res) => {
+			setInputs(res.data)
+			console.log(res.data)
+		})
+	}, [])
 	return (
 		<div ref={emblaRef} className='relative overflow-hidden lg:rounded-2xl' dir='rtl'>
 			<div className='flex'>
-				{new Array(6).fill(0).map((_, i) => (
+				{inputs.map((item, i) => (
 					<div key={i} className='min-w-0 flex-shrink-0 flex-grow-0 basis-[90%] lg:basis-full'>
-						<Image
-							src={SliderImage}
+						<img
+							src={`http://185.19.201.5:1000/file/${item.filePath}`}
 							alt='slide'
 							className='rounded-2xl lg:!scale-100 lg:rounded-none'
 							style={{
@@ -79,7 +88,7 @@ export default function MainCarousel() {
 				))}
 			</div>
 			<div className='absolute bottom-6 left-1/2 flex -translate-x-1/2 '>
-				{new Array(6).fill(0).map((_, i) => (
+				{inputs.map((_, i) => (
 					<div
 						key={i}
 						className={cn(
