@@ -2,18 +2,40 @@
 import useEmblaCarousel from "embla-carousel-react"
 import Image from "next/image"
 import Link from "next/link"
-import type { FC } from "react"
+import { useEffect, useState, type FC } from "react"
 import Arrow from "~/lib/icons/arrow"
 import { cn } from "~/lib/utils"
 import { SaleItem } from "./saleItem"
-
+import { AXIOS } from "../../../axios.config"
+interface ISalesItem {
+	classes: string[]
+	description: string
+	discount: number
+	importantProperties: {
+		expiration: string
+		weight: string
+	}
+	normalProperties: { country: string; brand: string }
+	price: number
+	rate: number
+	remaining: number
+	special: boolean
+	subtitle: string
+	title: string
+	_id: number
+}
 export const SaleSection: FC = () => {
+	const [data, setData] = useState<ISalesItem[]>([])
 	const [emblaRef] = useEmblaCarousel({
 		direction: "rtl",
 		watchResize: true,
 		dragFree: true
 	})
-
+	useEffect(() => {
+		AXIOS.get("/product/special").then((r) => {
+			setData(r.data.products)
+		})
+	}, [])
 	return (
 		<section className='mt-6 lg:container lg:mt-16'>
 			<div className='bg-primary py-6 lg:rounded-2xl lg:py-12'>
@@ -51,7 +73,7 @@ export const SaleSection: FC = () => {
 					</div>
 					<div ref={emblaRef} className='overflow-hidden' dir='rtl'>
 						<div className='flex'>
-							{new Array(6).fill(0).map((_, i) => (
+							{data.slice(0, 10).map((product, i) => (
 								<div
 									key={i}
 									className={cn(
@@ -59,7 +81,13 @@ export const SaleSection: FC = () => {
 										i === 0 && "ms-6 lg:ms-2",
 										i === 5 && "me-6 lg:me-12"
 									)}>
-									<SaleItem />
+									<SaleItem
+										discount={product.discount}
+										expiration={product.importantProperties.expiration}
+										price={product.price}
+										remaining={product.remaining}
+										title={product.title}
+									/>
 								</div>
 							))}
 						</div>

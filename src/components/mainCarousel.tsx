@@ -66,7 +66,6 @@ export default function MainCarousel() {
 	useEffect(() => {
 		AXIOS.get("banner").then((res) => {
 			setInputs(res.data)
-			console.log(res.data)
 		})
 	}, [])
 	return (
