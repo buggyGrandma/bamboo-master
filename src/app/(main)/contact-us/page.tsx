@@ -1,5 +1,7 @@
 import Image from "next/image"
 import React from "react"
+import Input from "~/components/contactPage/input"
+
 import { PhoneHeader } from "~/components/phoneHeader"
 import Call from "~/lib/icons/call"
 import Facebook from "~/lib/icons/facebook"
@@ -64,7 +66,18 @@ const Contact = () => {
 						</div>
 					</div>
 					<div className='mx-8  hidden  w-px bg-secondary-50 lg:block' />
-					<div className='w-full'></div>
+					<div className='flex w-full flex-col gap-4'>
+						<div className='flex w-full gap-4'>
+							<Input label='نام' star placeholder='نام خود را وارد کنید.' />
+							<Input
+								label='نام خانوادگی'
+								star
+								placeholder='نام خانوادگی خود را وارد کنید .'
+							/>
+						</div>
+						<Input label='ایمیل' star placeholder='ایمیل خود را وارد کنید .' />
+						<Input label='موضوع' placeholder='موضوع خود را وارد کنید.' />
+					</div>
 				</div>
 			</div>
 		</div>
