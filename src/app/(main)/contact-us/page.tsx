@@ -1,6 +1,7 @@
 import Image from "next/image"
 import React from "react"
 import Input from "~/components/contactPage/input"
+import TextArea from "~/components/contactPage/textArea"
 
 import { PhoneHeader } from "~/components/phoneHeader"
 import Call from "~/lib/icons/call"
@@ -77,6 +78,10 @@ const Contact = () => {
 						</div>
 						<Input label='ایمیل' star placeholder='ایمیل خود را وارد کنید .' />
 						<Input label='موضوع' placeholder='موضوع خود را وارد کنید.' />
+						<TextArea max={150} label='پیام' star placeholder='پیام خود را وارد کنید.' />
+						<button className='rounded-lg bg-primary p-4 text-xs text-white'>
+							ثبت و ارسال پیام
+						</button>
 					</div>
 				</div>
 			</div>
