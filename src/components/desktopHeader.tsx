@@ -24,6 +24,7 @@ export const DesktopHeader: React.FC = () => {
 					<DesktopHeaderLink href='/best-selling' text='فروش ویژه' />
 					<DesktopHeaderLink href='/contact-us' text='تماس با ما' />
 					<DesktopHeaderLink href='/about-us' text='درباره ما' />
+					<DesktopHeaderLink href='/blog' text='بلاگ' />
 					<li className='ms-auto pb-5'>
 						<a
 							href='02156700680'

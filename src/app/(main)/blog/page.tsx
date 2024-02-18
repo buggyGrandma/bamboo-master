@@ -185,6 +185,32 @@ export default function BlogsPage(props: BlogPageProps) {
 								<SearchTag text='بر چسب چهارم' />
 							</ul>
 						</section>
+						<section className=''>
+							<h3 className='text-sm text-secondary-500'>
+								محبوب ترین در <span className='text-primary'>وبلاگ</span>
+							</h3>
+							<div className='rounded-2xl bg-white lg:w-[425px] lg:border lg:border-secondary-50 lg:px-8 lg:py-12'>
+								<ul className='mt-6 flex flex-wrap gap-x-2 gap-y-4'>
+									<li className='flex'>
+										<Image
+											src='/about-us.jpeg'
+											alt=''
+											height={84}
+											width={85}
+											className={cn()}
+										/>
+										<div>
+											<h3 className='text-xs text-secondary xl:text-sm'>
+												علت نفس نفس زدن سگ چیست؟
+											</h3>
+											<div className='ms-auto'>
+												<span dir='ltr'>۱۳۹۸/۱۰/۲۱ - ۱۲:۵۰</span>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</section>
 					</div>
 				</div>
 			</div>
