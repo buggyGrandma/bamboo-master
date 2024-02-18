@@ -1,13 +1,28 @@
+"use client"
 import { Disclosure, Switch } from "@headlessui/react"
-import React from "react"
+import { useEffect } from "react"
+import { SearchInput } from "~/components/searchInput"
 import Arrow from "~/lib/icons/arrow"
 import Check from "~/lib/icons/check"
+
 interface Props {
 	title: string
 	options: string[][]
+	search?: boolean
+	searchPlaceHilder?: string
+	onChange: (event: any) => void
+	currents: string[]
 }
 
-const Filter = ({ title, options }: Props) => {
+const CFilter = ({
+	title,
+	options,
+	search = false,
+	searchPlaceHilder = "جستجو...",
+	onChange,
+	currents
+}: Props) => {
+	useEffect(() => onChange(currents), [currents])
 	return (
 		<div className='px-4 py-6'>
 			<Disclosure>
@@ -17,10 +32,24 @@ const Filter = ({ title, options }: Props) => {
 				</Disclosure.Button>
 				<Disclosure.Panel className='mt-4'>
 					<Switch.Group>
-						{options.map((option) => {
+						{search && (
+							<div className='mb-4 flex items-center'>
+								<SearchInput
+									className='ms-0 mt-6 max-w-none'
+									placeholder={searchPlaceHilder}
+								/>
+							</div>
+						)}
+						{options.map((option, i) => {
 							return (
-								<div className='flex items-center'>
+								<div key={i} className='flex items-center'>
 									<Switch
+										checked={option[0] ? currents.includes(option[0]) : false}
+										onChange={(e) => {
+											e && option[0]
+												? onChange([...currents, option[0]])
+												: onChange(currents.filter((item) => item !== option[0]))
+										}}
 										name='brand'
 										className='grid h-4 w-4 place-items-center rounded-[5px] border border-secondary text-white hover:border-primary ui-checked:border-primary ui-checked:bg-primary'>
 										<Check className='mr-px' />
@@ -41,4 +70,4 @@ const Filter = ({ title, options }: Props) => {
 	)
 }
 
-export default Filter
+export default CFilter
