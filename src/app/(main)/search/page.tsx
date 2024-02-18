@@ -12,6 +12,7 @@ import DragHandle from "~/lib/icons/dragHandle"
 import Minus from "~/lib/icons/minus"
 import Star from "~/lib/icons/star"
 import { cn, formatPrice } from "~/lib/utils"
+import Filter from "./components/Filter"
 
 export default function Search() {
 	const items = [
@@ -193,166 +194,29 @@ export default function Search() {
 								</li>
 							</ul>
 						</div>
-						<div className='px-4 py-6'>
-							<Disclosure>
-								<Disclosure.Button className='flex h-8 w-full items-center justify-between text-sm text-secondary'>
-									<h3> وضعیت :</h3>
-									<Arrow
-										direction='down'
-										variant='2'
-										className='transition-all ui-open:rotate-180'
-									/>
-								</Disclosure.Button>
-								<Disclosure.Panel className='mt-4'>
-									<Switch.Group>
-										<div className='flex items-center'>
-											<Switch
-												name='brand'
-												className='grid h-4 w-4 place-items-center rounded-[5px] border border-secondary text-white hover:border-primary ui-checked:border-primary ui-checked:bg-primary'>
-												<Check className='mr-px' />
-											</Switch>
-											<Switch.Label className='ms-2 flex flex-grow items-center justify-between'>
-												<div className='text-sm text-secondary'>فروش ویژه</div>
-											</Switch.Label>
-										</div>
-										<div className='flex items-center '>
-											<Switch
-												name='brand'
-												className='grid h-4 w-4 place-items-center rounded-[5px] border border-secondary text-white hover:border-primary ui-checked:border-primary ui-checked:bg-primary'>
-												<Check className='mr-px' />
-											</Switch>
-											<Switch.Label className='ms-2 flex flex-grow items-center justify-between'>
-												<div className='text-sm text-secondary'>کالا های موجود</div>
-											</Switch.Label>
-										</div>
-									</Switch.Group>
-								</Disclosure.Panel>
-							</Disclosure>
-						</div>
+						<Filter title=' وضعیت :' options={[["فروش ویژه"], ["کالا های موجود"]]} />
 						<div className='px-4 py-6'>
 							<h3 className='text-sm text-secondary'>قیمت محصول :</h3>
 							<RangeSlider className='mt-4' max={6500000} />
 						</div>
-						<div className='px-4 py-6'>
-							<Disclosure>
-								<Disclosure.Button className='flex h-8 w-full items-center justify-between text-sm text-secondary'>
-									<h3>برند ها :</h3>
-									<Arrow
-										direction='down'
-										variant='2'
-										className='transition-all ui-open:rotate-180'
-									/>
-								</Disclosure.Button>
-								<Disclosure.Panel className='mt-4'>
-									<Switch.Group>
-										<div className='flex items-center'>
-											<Switch
-												name='brand'
-												className='grid h-4 w-4 place-items-center rounded-[5px] border border-secondary text-white hover:border-primary ui-checked:border-primary ui-checked:bg-primary'>
-												<Check className='mr-px' />
-											</Switch>
-											<Switch.Label className='ms-2 flex flex-grow items-center justify-between'>
-												<div className='text-sm text-secondary'>جیم کت</div>
-												<div className='text-sm text-secondary-400'>Jim Cat</div>
-											</Switch.Label>
-										</div>
-										<div className='flex items-center'>
-											<Switch
-												name='brand'
-												className='grid h-4 w-4 place-items-center rounded-[5px] border border-secondary text-white hover:border-primary ui-checked:border-primary ui-checked:bg-primary'>
-												<Check className='mr-px' />
-											</Switch>
-											<Switch.Label className='ms-2 flex flex-grow items-center justify-between'>
-												<div className='text-sm text-secondary'>رویال کنین</div>
-												<div className='text-sm text-secondary-400'>Royal </div>
-											</Switch.Label>
-										</div>
-										<div className='flex items-center'>
-											<Switch
-												name='brand'
-												className='grid h-4 w-4 place-items-center rounded-[5px] border border-secondary text-white hover:border-primary ui-checked:border-primary ui-checked:bg-primary'>
-												<Check className='mr-px' />
-											</Switch>
-											<Switch.Label className='ms-2 flex flex-grow items-center justify-between'>
-												<div className='text-sm text-secondary'>رفلکس</div>
-												<div className='text-sm text-secondary-400'>Reflex</div>
-											</Switch.Label>
-										</div>
-									</Switch.Group>
-								</Disclosure.Panel>
-							</Disclosure>
-						</div>
-						<div className='px-4 py-6'>
-							<Disclosure>
-								<Disclosure.Button className='flex h-8 w-full items-center justify-between text-sm text-secondary'>
-									<h3> وزن محصول :</h3>
-									<Arrow
-										direction='down'
-										variant='2'
-										className='transition-all ui-open:rotate-180'
-									/>
-								</Disclosure.Button>
-								<Disclosure.Panel className='mt-4'>
-									<Switch.Group>
-										<div className='flex items-center'>
-											<Switch
-												name='brand'
-												className='grid h-4 w-4 place-items-center rounded-[5px] border border-secondary text-white hover:border-primary ui-checked:border-primary ui-checked:bg-primary'>
-												<Check className='mr-px' />
-											</Switch>
-											<Switch.Label className='ms-2 flex flex-grow items-center justify-between'>
-												<div className='text-sm text-secondary'>۱ کیلو گرم</div>
-												<div className='text-sm text-secondary-400'>50</div>
-											</Switch.Label>
-										</div>
-										<div className='flex items-center'>
-											<Switch
-												name='brand'
-												className='grid h-4 w-4 place-items-center rounded-[5px] border border-secondary text-white hover:border-primary ui-checked:border-primary ui-checked:bg-primary'>
-												<Check className='mr-px' />
-											</Switch>
-											<Switch.Label className='ms-2 flex flex-grow items-center justify-between'>
-												<div className='text-sm text-secondary'>۲,۵ کیلو گرم</div>
-												<div className='text-sm text-secondary-400'>۳۲</div>
-											</Switch.Label>
-										</div>
-										<div className='flex items-center'>
-											<Switch
-												name='brand'
-												className='grid h-4 w-4 place-items-center rounded-[5px] border border-secondary text-white hover:border-primary ui-checked:border-primary ui-checked:bg-primary'>
-												<Check className='mr-px' />
-											</Switch>
-											<Switch.Label className='ms-2 flex flex-grow items-center justify-between'>
-												<div className='text-sm text-secondary'>۵ کیلو گرم</div>
-												<div className='text-sm text-secondary-400'>۶۶</div>
-											</Switch.Label>
-										</div>
-										<div className='flex items-center'>
-											<Switch
-												name='brand'
-												className='grid h-4 w-4 place-items-center rounded-[5px] border border-secondary text-white hover:border-primary ui-checked:border-primary ui-checked:bg-primary'>
-												<Check className='mr-px' />
-											</Switch>
-											<Switch.Label className='ms-2 flex flex-grow items-center justify-between'>
-												<div className='text-sm text-secondary'>۱۰ کیلو گرم</div>
-												<div className='text-sm text-secondary-400'>۵۰</div>
-											</Switch.Label>
-										</div>
-										<div className='flex items-center'>
-											<Switch
-												name='brand'
-												className='grid h-4 w-4 place-items-center rounded-[5px] border border-secondary text-white hover:border-primary ui-checked:border-primary ui-checked:bg-primary'>
-												<Check className='mr-px' />
-											</Switch>
-											<Switch.Label className='ms-2 flex flex-grow items-center justify-between'>
-												<div className='text-sm text-secondary'>۲۰ کیلو گرم</div>
-												<div className='text-sm text-secondary-400'>۳۲</div>
-											</Switch.Label>
-										</div>
-									</Switch.Group>
-								</Disclosure.Panel>
-							</Disclosure>
-						</div>
+						<Filter
+							title='برند ها :'
+							options={[
+								["جیم کت", "Jim Cat"],
+								["رویال", "Royal"],
+								["رفلکس", "Reflex"]
+							]}
+						/>
+						<Filter
+							title='وزن محصول :'
+							options={[
+								[" ۱ کیلوگرم", "۵۰"],
+								["۲/۵ کیلوگرم", "۳۲"],
+								["۵ کیلوگرم", "۶۶"],
+								["۱۰ کیلوگرم", "۵۰"],
+								["۲۰ کیلوگرم", "۳۲"]
+							]}
+						/>
 						<div className='px-4 py-6'>
 							<Disclosure>
 								<Disclosure.Button className='flex h-8 w-full items-center justify-between text-sm text-secondary'>
