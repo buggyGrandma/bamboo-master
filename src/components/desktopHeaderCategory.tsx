@@ -8,9 +8,11 @@ import { cn } from "~/lib/utils"
 import { AXIOS } from "../../axios.config"
 interface SubType {
 	title: string
+	subcategoryIcon: string
+	icon: string
 	classes: string[]
 }
-interface InputType {
+export interface InputType {
 	animal: string
 	animalIcon: string
 	subcategories: SubType[]
