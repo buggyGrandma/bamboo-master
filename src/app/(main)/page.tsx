@@ -1,5 +1,6 @@
 import { CarouselSection } from "~/components/homePage/carouselSection"
 import CategorySection from "~/components/homePage/categorySection"
+import CommentsSection from "~/components/homePage/commentsSection"
 import { FeatureSection } from "~/components/homePage/featureSection"
 import { InfoSection } from "~/components/homePage/infoSection"
 import { SaleSection } from "~/components/homePage/saleSection"
@@ -14,6 +15,7 @@ export default function Home() {
 				<FeatureSection />
 				<SaleSection />
 				<CategorySection />
+				<CommentsSection />
 				<InfoSection />
 			</div>
 		</>

@@ -10,7 +10,7 @@ const CategorySection = () => {
 			.then((results) => setInput(results.data))
 			.catch((err) => console.error(err))
 	}, [])
-	console.log(input)
+
 	return (
 		<div className='flex flex-col items-center gap-10 p-20'>
 			<h3 className='flex text-lg font-extrabold text-secondary'>
@@ -21,7 +21,7 @@ const CategorySection = () => {
 					.flatMap((item) => item.subcategories)
 					.map((category) => {
 						return (
-							<div className='flex flex-col items-center gap-5 '>
+							<div key={category.title} className='flex flex-col items-center gap-5 '>
 								<img
 									className=' h-[200px] w-[200px] justify-items-center rounded-full '
 									src={`http://185.19.201.5:1000/file/${category.subcategoryIcon ? category.subcategoryIcon : category.icon}`}
