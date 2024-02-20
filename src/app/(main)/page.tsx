@@ -1,3 +1,4 @@
+import BlogSection from "~/components/homePage/blogSection"
 import { CarouselSection } from "~/components/homePage/carouselSection"
 import CategorySection from "~/components/homePage/categorySection"
 import CommentsSection from "~/components/homePage/commentsSection"
@@ -16,6 +17,7 @@ export default function Home() {
 				<SaleSection />
 				<CategorySection />
 				<CommentsSection />
+				<BlogSection />
 				<InfoSection />
 			</div>
 		</>
