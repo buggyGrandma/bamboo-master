@@ -3,14 +3,16 @@ import { Disclosure, RadioGroup } from "@headlessui/react"
 import React, { useState } from "react"
 import Arrow from "~/lib/icons/arrow"
 import { cn } from "~/lib/utils"
+import { Filter } from "../page"
 
 interface Props {
 	title: string
 	options: string[]
-	currents: string[]
+	currents: Filter[]
+	type: string
 	onChange: (item: any) => void
 }
-const RFilter = ({ title, options, currents, onChange }: Props) => {
+const RFilter = ({ title, options, currents, onChange, type }: Props) => {
 	const [value, setValue] = useState<number>(0)
 	return (
 		<div className='px-4 py-6'>
@@ -25,7 +27,10 @@ const RFilter = ({ title, options, currents, onChange }: Props) => {
 						value={value}
 						onChange={(e) => {
 							setValue(e),
-								onChange([...currents.filter((item) => !options.includes(item)), e])
+								onChange([
+									...currents.filter((item) => !options.includes(item.name)),
+									{ name: e, type: type }
+								])
 						}}
 						className='flex flex-col gap-2'>
 						{options.map((age, i) => (

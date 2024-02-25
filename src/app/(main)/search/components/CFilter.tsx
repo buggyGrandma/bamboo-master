@@ -4,6 +4,7 @@ import { useEffect } from "react"
 import { SearchInput } from "~/components/searchInput"
 import Arrow from "~/lib/icons/arrow"
 import Check from "~/lib/icons/check"
+import { Filter } from "../page"
 
 interface Props {
 	title: string
@@ -11,7 +12,8 @@ interface Props {
 	search?: boolean
 	searchPlaceHilder?: string
 	onChange: (event: any) => void
-	currents: string[]
+	currents: Filter[]
+	type: string
 }
 
 const CFilter = ({
@@ -20,7 +22,8 @@ const CFilter = ({
 	search = false,
 	searchPlaceHilder = "جستجو...",
 	onChange,
-	currents
+	currents,
+	type
 }: Props) => {
 	useEffect(() => onChange(currents), [currents])
 	return (
@@ -44,17 +47,23 @@ const CFilter = ({
 							return (
 								<div key={i} className='flex items-center'>
 									<Switch
-										checked={option[0] ? currents.includes(option[0]) : false}
+										checked={
+											option[0]
+												? currents.filter((e) => e.name === option[0]).length > 0
+												: false
+										}
 										onChange={(e) => {
 											e && option[0]
-												? onChange([...currents, option[0]])
-												: onChange(currents.filter((item) => item !== option[0]))
+												? onChange([...currents, { name: option[0], type: type }])
+												: onChange(currents.filter((item) => item.name !== option[0]))
 										}}
-										name='brand'
+										name={type}
 										className='grid h-4 w-4 place-items-center rounded-[5px] border border-secondary text-white hover:border-primary ui-checked:border-primary ui-checked:bg-primary'>
 										<Check className='mr-px' />
 									</Switch>
-									<Switch.Label className='ms-2 flex flex-grow items-center justify-between'>
+									<Switch.Label
+										htmlFor={type}
+										className='ms-2 flex flex-grow items-center justify-between'>
 										<div className='text-sm text-secondary'>{option[0]}</div>
 										{option[1] && (
 											<div className='text-sm text-secondary-400'>{option[1]}</div>

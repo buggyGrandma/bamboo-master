@@ -1,7 +1,8 @@
 import React from "react"
+import { Filter } from "../page"
 
 interface Props {
-	currents: string[]
+	currents: Filter[]
 	setCurrenrs: (event: any) => void
 }
 const SelectedFilters = ({ currents, setCurrenrs }: Props) => {
@@ -19,7 +20,7 @@ const SelectedFilters = ({ currents, setCurrenrs }: Props) => {
 			<ul className='mt-8 flex flex-wrap gap-2'>
 				{currents.map((filter) => {
 					return (
-						<li key={filter}>
+						<li key={filter.name}>
 							<button
 								onClick={() => setCurrenrs(currents.filter((item) => item !== filter))}
 								type='button'
@@ -35,7 +36,7 @@ const SelectedFilters = ({ currents, setCurrenrs }: Props) => {
 										fill='white'
 									/>
 								</svg>
-								<div className=''>{filter}</div>
+								<div className=''>{filter.name}</div>
 							</button>
 						</li>
 					)

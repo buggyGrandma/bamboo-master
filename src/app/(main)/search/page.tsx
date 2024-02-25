@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { PhoneHeader } from "~/components/phoneHeader"
 import { SearchInput } from "~/components/searchInput"
 import { cn } from "~/lib/utils"
@@ -9,7 +9,15 @@ import ListItem from "./components/ListItem"
 import RFilter from "./components/RFilter"
 import RangeSlider from "./components/RangeSlider"
 import SelectedFilters from "./components/SelectedFilters"
-
+import { AXIOS } from "../../../../axios.config"
+export type Filter = {
+	name: string
+	type: string
+}
+type F = {
+	type: string
+	filters: string[]
+}
 export default function Search() {
 	const items = [
 		{
@@ -98,7 +106,26 @@ export default function Search() {
 
 	const lastRowOverflowCountLg = (items.length / 4 - Math.floor(items.length / 4)) * 4
 	const smHasOverflow = items.length % 2 > 0
-	const [filters, setFilter] = useState<string[]>([])
+	const defaults = ["brand", "country", "weight"]
+	const [filters, setFilter] = useState<Filter[]>([])
+	const [newFilters, setNewFilters] = useState<F[]>([])
+	useEffect(() => {
+		AXIOS.get(
+			`product/filter?${defaults
+				.map((item) => {
+					return {
+						type: item,
+						filters: filters.filter((e) => e.type === item).flatMap((e) => e.name)
+					}
+				})
+				.map((e) => {
+					return e.filters.length ? e.type + "=" + e.filters.map((e) => e) : null
+				})
+				.filter((e) => e)
+				.join("&")}`
+		).then((e) => console.log(e.data))
+	}, [filters])
+
 	return (
 		<div className='bg-white'>
 			<PhoneHeader titleNormal='جستجو' titleColored='محصولات' />
@@ -111,6 +138,7 @@ export default function Search() {
 							currents={filters}
 							onChange={setFilter}
 							title=' وضعیت :'
+							type='status'
 							options={[["فروش ویژه"], ["کالا های موجود"]]}
 						/>
 						<RangeSlider className='mt-4' max={6500000} />
@@ -118,6 +146,7 @@ export default function Search() {
 							currents={filters}
 							onChange={setFilter}
 							title='برند ها :'
+							type='brand'
 							options={[
 								["جیم کت", "Jim Cat"],
 								["رویال", "Royal"],
@@ -125,6 +154,7 @@ export default function Search() {
 							]}
 						/>
 						<CFilter
+							type='weight'
 							currents={filters}
 							onChange={setFilter}
 							title='وزن محصول :'
@@ -137,6 +167,7 @@ export default function Search() {
 							]}
 						/>
 						<RFilter
+							type='age'
 							currents={filters}
 							onChange={setFilter}
 							title='سن :'
@@ -149,6 +180,7 @@ export default function Search() {
 							]}
 						/>
 						<CFilter
+							type='country'
 							currents={filters}
 							onChange={setFilter}
 							search
