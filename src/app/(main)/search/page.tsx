@@ -39,10 +39,7 @@ export default function Search() {
 				})
 				.filter((e) => e)
 				.join("&")}`
-		).then((e) => {
-			console.log(e.data)
-			setItems(e.data)
-		})
+		).then((e) => setItems(e.data))
 	}, [filters])
 
 	return (
