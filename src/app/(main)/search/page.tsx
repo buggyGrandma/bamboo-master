@@ -5,7 +5,7 @@ import { PhoneHeader } from "~/components/phoneHeader"
 import { SearchInput } from "~/components/searchInput"
 import { cn } from "~/lib/utils"
 import CFilter from "./components/CFilter"
-import ListItem from "./components/ListItem"
+import ListItem, { TListItem } from "./components/ListItem"
 import RFilter from "./components/RFilter"
 import RangeSlider from "./components/RangeSlider"
 import SelectedFilters from "./components/SelectedFilters"
@@ -19,91 +19,7 @@ type F = {
 	filters: string[]
 }
 export default function Search() {
-	const items = [
-		{
-			id: "1",
-			weight: "4 Kg",
-			stars: 4.5,
-			title: "غذای خشک گربه یوریناری اس او رویال کنین",
-			price: 4090000,
-			newPrice: 3990000,
-			href: "/product/1",
-			image: "/product1.png"
-		},
-		{
-			id: "2",
-			weight: "4 Kg",
-			stars: 4.5,
-			title: "غذای خشک گربه یوریناری اس او رویال کنین",
-			price: 4090000,
-			href: "/product/2",
-			image: "/product1.png"
-		},
-		{
-			id: "3",
-			weight: "4 Kg",
-			stars: 4.5,
-			title: "غذای خشک گربه یوریناری اس او رویال کنین",
-			price: 4090000,
-			href: "/product/3",
-			image: "/product1.png"
-		},
-		{
-			id: "4",
-			weight: "4 Kg",
-			stars: 4.5,
-			title: "غذای خشک گربه یوریناری اس او رویال کنین",
-			price: 4090000,
-			href: "/product/4",
-			image: "/product1.png"
-		},
-		{
-			id: "5",
-			weight: "4 Kg",
-			stars: 4.5,
-			title: "غذای خشک گربه یوریناری اس او رویال کنین",
-			price: 4090000,
-			href: "/product/5",
-			image: "/product1.png"
-		},
-		{
-			id: "6",
-			weight: "4 Kg",
-			stars: 4.5,
-			title: "غذای خشک گربه یوریناری اس او رویال کنین",
-			price: 4090000,
-			href: "/product/6",
-			image: "/product1.png"
-		},
-		{
-			id: "7",
-			weight: "4 Kg",
-			stars: 4.5,
-			title: "غذای خشک گربه یوریناری اس او رویال کنین",
-			price: 4090000,
-			href: "/product/7",
-			image: "/product1.png"
-		},
-		{
-			id: "8",
-			weight: "4 Kg",
-			stars: 4.5,
-			title: "غذای خشک گربه یوریناری اس او رویال کنین",
-			price: 4090000,
-			href: "/product/8",
-			image: "/product1.png"
-		},
-		{
-			id: "9",
-			weight: "4 Kg",
-			stars: 4.5,
-			title: "غذای خشک گربه یوریناری اس او رویال کنین",
-			price: 4090000,
-			href: "/product/9",
-			image: "/product1.png"
-		}
-	]
-
+	const [items, setItems] = useState<TListItem[]>([])
 	const lastRowOverflowCountLg = (items.length / 4 - Math.floor(items.length / 4)) * 4
 	const smHasOverflow = items.length % 2 > 0
 	const defaults = ["brand", "country", "weight"]
@@ -123,7 +39,10 @@ export default function Search() {
 				})
 				.filter((e) => e)
 				.join("&")}`
-		).then((e) => console.log(e.data))
+		).then((e) => {
+			console.log(e.data)
+			setItems(e.data)
+		})
 	}, [filters])
 
 	return (
@@ -198,8 +117,12 @@ export default function Search() {
 					<section className='mt-6 grid w-full grid-cols-1 bg-white sm:grid-cols-2 lg:mt-0 lg:grid-cols-4 lg:rounded-2xl lg:border lg:border-secondary-50'>
 						{items.map((item, i) => (
 							<ListItem
-								key={item.id}
-								item={item}
+								key={i}
+								discount={item.discount}
+								importantProperties={item.importantProperties}
+								price={item.price}
+								rate={item.rate}
+								subtitle={item.subtitle}
 								className={cn(
 									smHasOverflow && "sm:max-lg:[&:nth-last-child(2)]:border-b",
 									lastRowOverflowCountLg < items.length - i && "lg:border-b",
