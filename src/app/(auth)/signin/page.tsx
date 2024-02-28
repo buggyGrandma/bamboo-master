@@ -1,7 +1,6 @@
 "use client"
 import { Switch } from "@headlessui/react"
 import Link from "next/link"
-import { redirect } from "next/navigation"
 import type { ChangeEventHandler, FormEventHandler } from "react"
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
@@ -10,40 +9,38 @@ import Check from "~/lib/icons/check"
 import type { Nullable } from "~/lib/typeHelpers"
 import { cn } from "~/lib/utils"
 import { OtpInput } from "./otpInput"
+import { AXIOS } from "../../../../axios.config"
+import { time } from "console"
 
 const otpResponseZod = z.object({
 	expires: z.string().datetime()
 })
-
 export default function SignIn() {
 	const [checked, setChecked] = useState(false)
 	const [account, setAccount] = useState("")
-	const [remainingTime, setRemainingTime] = useState(0)
+	const [remainingTime, setRemainingTime] = useState(120)
 	const [otpExpire, setOtpExpire] = useState<Nullable<Date>>(null)
 	const [loading, setLoading] = useState(false)
 	const [otp, setOtp] = useState("")
-
 	useEffect(() => {
 		if (otpExpire === null) {
 			return
 		}
 
-		setRemainingTime(((otpExpire.getTime() - Date.now()) / 1000) | 0)
+		// const interval = setInterval(() => {
+		// 	console.log(remainingTime)
+		// 	if (remainingTime <= 0) {
+		// 		clearInterval(interval)
+		// 		return
+		// 	}
+		// 	setRemainingTime(remainingTime - 1)
+		// }, 1000)
 
-		const interval = setInterval(() => {
-			setRemainingTime((x) => {
-				if (x <= 0) {
-					clearInterval(interval)
-					return 0
-				}
-				return x - 1
-			})
-		}, 1000)
-
-		return () => {
-			clearInterval(interval)
-		}
+		// return () => {
+		// 	clearInterval(interval)
+		// }
 	}, [otpExpire])
+	//if (otpExpire) console.log(new Date(otpExpire.getTime() - Date.now()))
 
 	// eslint-disable-next-line @typescript-eslint/no-misused-promises
 	const onAccountFormSubmit: FormEventHandler<HTMLFormElement> = useCallback(async (e) => {
@@ -51,31 +48,17 @@ export default function SignIn() {
 			e.preventDefault()
 			setLoading(true)
 			const formData = new FormData(e.currentTarget)
-
-			const response = await fetch("/api/otp", {
-				method: "POST",
-				body: JSON.stringify({
-					account: formData.get("username")?.toString(),
-					eula: formData.get("eula")?.toString()
-				})
-			})
+			const response = await AXIOS.post("authentication/sendOTP", {
+				account: formData.get("username")
+			}).then((res) => res.data)
 
 			console.log(response)
 
-			if (!response.ok) {
+			if (response.status !== "ok") {
 				setLoading(false)
 				return
 			}
-
-			const data = otpResponseZod.safeParse(await response.json())
-
-			if (!data.success) {
-				console.log(data.error)
-				setLoading(false)
-				return
-			}
-
-			setOtpExpire(new Date(data.data.expires))
+			setOtpExpire(new Date(response.expire))
 			setLoading(false)
 		} catch (error) {
 			setLoading(false)
@@ -88,26 +71,16 @@ export default function SignIn() {
 			try {
 				e.preventDefault()
 				setLoading(true)
-
-				const response = await fetch("/api/otp-confirm", {
-					method: "POST",
-					body: JSON.stringify({ account: account, otp: otp, eulaAccepted: checked })
-				})
-
-				if (!response.ok) {
+				const response = await AXIOS.put("authentication/verifyOTP", {
+					account: account,
+					otp: otp
+				}).then((res) => res.data)
+				if (response.token !== "wrong") {
 					setLoading(false)
-
-					const result = z.object({ error: z.string() }).safeParse(await response.json())
-
-					if (result.success) {
-						toast.error(result.data.error)
-					} else {
-						toast.error("خطا در ارتباط با سرور.")
-					}
-
-					return
+					toast.success("وارد شدید.")
+				} else {
+					toast.error("خطا در ارتباط با سرور.")
 				}
-
 				setLoading(false)
 			} catch (error) {
 				toast.error("خطا در ارتباط با سرور.")
@@ -118,12 +91,8 @@ export default function SignIn() {
 	)
 
 	const onAcountChange: ChangeEventHandler<HTMLInputElement> = useCallback((e) => {
-		setAccount(e.currentTarget.value.trim())
+		setAccount(e.target.value.trim())
 	}, [])
-
-	if (status === "authenticated") {
-		redirect("/")
-	}
 
 	if (otpExpire === null) {
 		return (
@@ -145,7 +114,7 @@ export default function SignIn() {
 						name='username'
 						id='username'
 						value={account}
-						onChange={onAcountChange}
+						onChange={(e) => onAcountChange(e)}
 						placeholder='شماره موبایل یا ایمیل'
 						className={cn(
 							"mt-2 h-12 self-stretch rounded-lg border border-secondary-50 pr-6 text-right text-primary outline-none placeholder:text-secondary-400 focus:border-primary",
@@ -216,8 +185,8 @@ export default function SignIn() {
 			<button
 				type='submit'
 				className='mt-4 flex h-12 w-full items-center justify-center rounded-lg bg-primary text-sm font-bold text-fa transition-[filter] disabled:grayscale md:mt-6'
-				disabled={loading || otp.length < 6}
-				aria-disabled={loading || otp.length < 6}>
+				disabled={loading || otp.length < 4}
+				aria-disabled={loading || otp.length < 4}>
 				تایید
 			</button>
 		</form>

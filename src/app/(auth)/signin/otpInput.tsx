@@ -24,7 +24,7 @@ export function OtpInput({
 		if (loading) {
 			return
 		}
-		if (value.length === 6) {
+		if (value.length === 4) {
 			setValue("")
 			setTimeout(() => {
 				inputRef.current?.focus()
@@ -36,7 +36,7 @@ export function OtpInput({
 	const onChange: ChangeEventHandler<HTMLInputElement> = useCallback(
 		(e) => {
 			const value = pa2e(e.currentTarget.value.replace(/[^\d]/g, ""))
-			setValue((prev) => `${prev}${value}`.slice(0, 6))
+			setValue((prev) => `${prev}${value}`.slice(0, 4))
 		},
 		[setValue]
 	)
@@ -52,10 +52,10 @@ export function OtpInput({
 
 	return (
 		<div
-			className='mt-8 grid h-14 grid-flow-row-dense grid-cols-6 grid-rows-1 gap-2 overflow-hidden'
+			className='mt-8 grid h-14 grid-flow-row-dense grid-cols-4 grid-rows-1 gap-2 overflow-hidden'
 			dir='ltr'
 			onClick={onInputContainerClick}>
-			{new Array(6).fill("").map((_, i) => (
+			{new Array(4).fill("").map((_, i) => (
 				<div
 					key={i}
 					className={cn(
@@ -63,9 +63,9 @@ export function OtpInput({
 						i === 0 && "col-start-1 col-end-2",
 						i === 1 && "col-start-2 col-end-3",
 						i === 2 && "col-start-3 col-end-4",
-						i === 3 && "col-start-4 col-end-5",
-						i === 4 && "col-start-5 col-end-6",
-						i === 5 && "col-start-6 col-end-7"
+						i === 3 && "col-start-4 col-end-5"
+						//i === 4 && "col-start-5 col-end-6",
+						//i === 5 && "col-start-6 col-end-7"
 					)}>
 					{value[i]}
 				</div>
@@ -87,9 +87,9 @@ export function OtpInput({
 					value.length === 1 && "col-start-2 col-end-3",
 					value.length === 2 && "col-start-3 col-end-4",
 					value.length === 3 && "col-start-4 col-end-5",
-					value.length === 4 && "col-start-5 col-end-6",
-					value.length === 5 && "col-start-6 col-end-7",
-					value.length === 6 && "hidden"
+					value.length === 4 && "hidden"
+					//value.length === 5 && "col-start-6 col-end-7",
+					//value.length === 6 && "hidden"
 				)}
 			/>
 		</div>
