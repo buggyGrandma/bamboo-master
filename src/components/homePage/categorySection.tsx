@@ -1,16 +1,15 @@
 "use client"
-import React, { useEffect, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
 import { AXIOS } from "../../../axios.config"
 import { InputType } from "../desktopHeaderCategory"
 
 const CategorySection = () => {
-	const [input, setInput] = useState<InputType[]>([] as InputType[])
-	useEffect(() => {
-		AXIOS.get("category/categories")
-			.then((results) => setInput(results.data))
-			.catch((err) => console.error(err))
-	}, [])
-
+	const fetchCategories = () =>
+		AXIOS.get<InputType[]>("category/categories").then((results) => results.data)
+	const { data: input } = useQuery({
+		queryKey: ["category"],
+		queryFn: fetchCategories
+	})
 	return (
 		<div className='flex flex-col items-center gap-10 p-20'>
 			<h3 className='flex text-lg font-extrabold text-secondary'>
@@ -18,7 +17,7 @@ const CategorySection = () => {
 			</h3>
 			<div className='flex flex-wrap justify-evenly gap-x-6 gap-y-10 '>
 				{input
-					.flatMap((item) => item.subcategories)
+					?.flatMap((item) => item.subcategories)
 					.map((category) => {
 						return (
 							<div key={category.title} className='flex flex-col items-center gap-5 '>
