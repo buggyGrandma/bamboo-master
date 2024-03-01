@@ -10,7 +10,7 @@ const BlogSection = () => {
 			<h3 className='flex  text-lg font-extrabold text-secondary'>
 				وبلاگ<p className='text-primary'>پت شاپ</p>
 			</h3>
-			<Carousel input={[<BlogPost />, <BlogPost />, <BlogPost />, <BlogPost />]} />
+			<Carousel input={[<BlogPost />, <BlogPost />, <BlogPost />]} />
 			<Link
 				href='/blog'
 				className='rounded-lg border border-primary px-14 py-3 text-xs font-bold text-primary'>
