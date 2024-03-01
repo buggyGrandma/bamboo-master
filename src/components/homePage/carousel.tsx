@@ -4,7 +4,12 @@ import Arrow from "~/lib/icons/arrow"
 import "./carouselCSS.css"
 
 const Carousel = ({ input }: { input: ReactNode[] }) => {
-	const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, direction: "rtl", startIndex: 1 })
+	const [emblaRef, emblaApi] = useEmblaCarousel({
+		loop: true,
+		direction: "rtl",
+		startIndex: 1,
+		watchResize: true
+	})
 	const [selected, setSelected] = useState(1)
 	const logSlidesInView = useCallback((emblaApi: any) => {
 		setSelected(emblaApi.selectedScrollSnap())
