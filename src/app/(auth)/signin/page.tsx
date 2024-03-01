@@ -8,9 +8,8 @@ import { z } from "zod"
 import Check from "~/lib/icons/check"
 import type { Nullable } from "~/lib/typeHelpers"
 import { cn } from "~/lib/utils"
-import { OtpInput } from "./otpInput"
 import { AXIOS } from "../../../../axios.config"
-import { time } from "console"
+import { OtpInput } from "./otpInput"
 
 const otpResponseZod = z.object({
 	expires: z.string().datetime()

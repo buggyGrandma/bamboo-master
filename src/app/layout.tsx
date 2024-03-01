@@ -3,7 +3,6 @@ import { Toaster } from "sonner"
 import { cn } from "~/lib/utils"
 import { IRANYekanXVF } from "~/styles/font"
 import "~/styles/globals.css"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import QueryProvider from "./QueryProvider"
 export const metadata: Metadata = {
 	title: {

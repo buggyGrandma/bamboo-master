@@ -32,7 +32,7 @@ export const SaleSection: FC = () => {
 		dragFree: true
 	})
 	const fetchSpecials = async () => {
-		const res = await AXIOS.get<{ products: ISalesItem[] }>("/product/special")
+		const res = await AXIOS.get<{ products: ISalesItem[] }>("product/special")
 		return res.data
 	}
 	const { data } = useQuery({
