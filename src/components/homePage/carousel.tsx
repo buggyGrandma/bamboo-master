@@ -25,14 +25,14 @@ const Carousel = ({ input }: { input: ReactNode[] }) => {
 	}
 
 	return (
-		<div className='max relative w-full'>
+		<div className=' relative w-full'>
 			<button
 				onClick={handlePrev}
 				className='absolute right-0 top-1/2 z-10 -translate-y-1/2 p-5'>
 				<Arrow className=' text-secondary hover:text-primary' direction='right' />
 			</button>
 			<div className='embla ' ref={emblaRef}>
-				<div className='embla__container m-10 max-w-7xl  overflow-visible'>
+				<div className='embla__container m-10 mx-auto max-w-lg overflow-visible '>
 					{input.map((item, i) => {
 						return (
 							<div
