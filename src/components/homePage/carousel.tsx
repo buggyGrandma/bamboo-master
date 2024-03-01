@@ -18,7 +18,7 @@ const Carousel = ({ input }: { input: ReactNode[] }) => {
 	const handlePrev = () => {
 		emblaApi?.scrollPrev()
 	}
-	console.log(selected)
+
 	return (
 		<div className='max relative w-full'>
 			<button
