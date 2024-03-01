@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import { flushSync } from "react-dom"
 import { cn } from "~/lib/utils"
 import { AXIOS } from "../../axios.config"
+import { useQuery } from "@tanstack/react-query"
 
 interface Input {
 	action: string
@@ -62,16 +63,15 @@ export default function MainCarousel() {
 		})
 		emblaApi.on("reInit", onScroll)
 	}, [emblaApi, onScroll])
-	const [inputs, setInputs] = useState<Input[]>([] as Input[])
-	useEffect(() => {
-		AXIOS.get("banner").then((res) => {
-			setInputs(res.data)
-		})
-	}, [])
+	const fetchBanner = () => AXIOS.get<Input[]>("banner").then((res) => res.data)
+	const { data: inputs } = useQuery({
+		queryKey: ["banner"],
+		queryFn: fetchBanner
+	})
 	return (
 		<div ref={emblaRef} className='relative overflow-hidden lg:rounded-2xl' dir='rtl'>
 			<div className='flex'>
-				{inputs.map((item, i) => (
+				{inputs?.map((item, i) => (
 					<div key={i} className='min-w-0 flex-shrink-0 flex-grow-0 basis-[90%] lg:basis-full'>
 						<img
 							src={`http://185.19.201.5:1000/file/${item.filePath}`}
@@ -87,7 +87,7 @@ export default function MainCarousel() {
 				))}
 			</div>
 			<div className='absolute bottom-6 left-1/2 flex -translate-x-1/2 '>
-				{inputs.map((_, i) => (
+				{inputs?.map((_, i) => (
 					<div
 						key={i}
 						className={cn(
