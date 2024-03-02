@@ -1,9 +1,26 @@
+"use client"
+import { useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import Link from "next/link"
 import { SearchTag } from "~/components/blogPage/searchTag"
 import { PhoneHeader } from "~/components/phoneHeader"
 import { SearchInput } from "~/components/searchInput"
 import { cn } from "~/lib/utils"
+import { AXIOS } from "../../../../axios.config"
+
+interface IBlog {
+	title: string
+	text: string
+	summery: string
+	image: string
+	mark: string
+	tag: string
+	date: string
+	writer: {
+		name: string
+		image: string
+	}
+}
 
 type BlogPageProps = {
 	searchParams: {
@@ -13,13 +30,35 @@ type BlogPageProps = {
 	}
 }
 
-export const metadata = {
-	title: "وبلاگ"
-}
+// export const metadata = {
+// 	title: "وبلاگ"
+// }
 
 export default function BlogsPage(props: BlogPageProps) {
+	const fetchBlog = async () => {
+		const res = await AXIOS.get<{ blogs: IBlog[] }>("blog/مقاله 1")
+		return res.data
+	}
+	const { data } = useQuery({
+		queryKey: ["blogs"],
+		queryFn: fetchBlog
+	})
+	console.log(data)
 	return (
 		<div className='bg-white pb-28 lg:bg-fa'>
+			{/* <div className='flex'>
+				{blogs?.map((blog, i) => (
+					<div
+						key={i}
+						className={cn(
+							"mx-1 min-w-0 max-w-full flex-shrink-0 flex-grow-0 basis-48 lg:mx-2 lg:basis-60 xl:basis-64 2xl:basis-72",
+							i === 0 && "ms-6 lg:ms-2",
+							i === 5 && "me-6 lg:me-12"
+						)}>
+						<div>{blog.mark}</div>
+					</div>
+				))}
+			</div> */}
 			<PhoneHeader titleNormal='وبلاگ' titleColored='پت شاپ' />
 			<div className='container mt-8 lg:mt-10'>
 				<h2 className='ms-3 hidden text-sm text-secondary lg:block'>
@@ -55,6 +94,7 @@ export default function BlogsPage(props: BlogPageProps) {
 									<div className='flex items-center text-xs text-secondary xl:text-sm'>
 										<Image
 											src='/about-us.jpeg'
+											// src={`http://185.19.201.5:1000/file/${data?.pofileWriter.profile.jpg}`}
 											alt=''
 											height={40}
 											width={40}
@@ -65,23 +105,19 @@ export default function BlogsPage(props: BlogPageProps) {
 												"xl:h-10 xl:w-10"
 											)}
 										/>
-										<div className='ms-2 xl:ms-4'>محمد رضا شریفی</div>
+										<div className='ms-2 xl:ms-4'>{data?.writer.name}</div>
 										<div className='ms-auto'>
 											<span dir='ltr'>۱۳۹۸/۱۰/۲۱ - ۱۲:۵۰</span>
 										</div>
 									</div>
 									<h3 className='text-lg font-bold text-secondary xl:text-2xl xl:font-extrabold'>
-										علت نفس نفس زدن سگ چیست؟
+										{data?.title}
 									</h3>
 									<div className='hidden self-start rounded-full border border-primary px-6 py-2 text-xs text-primary md:block lg:hidden xl:block'>
 										دانستنی های گربه
 									</div>
 									<p className='text-sm text-secondary'>
-										نفس نفس زدن در سگ‌ها در بیشتر مواقع، یک رفتار عادی تلقی می‌شود و
-										معمولا بعد از انجام فعالیت‌‌های حرکتی و یا در فصول گرم سال به وضوح
-										قابل مشاهده است. اما در برخی موارد ممکن است نفس نفس زدن طولانی مدت
-										سگ‌ها در شرایط و زمان خاص نگران کننده به نظر برسد. در صورتی که له له
-										زدن همراه ...
+										{data?.summery}
 										<Link
 											href='/blog/slug'
 											className='ms-1 hidden font-semibold text-primary underline underline-offset-4 md:inline-block lg:hidden xl:inline-block'>
@@ -109,6 +145,7 @@ export default function BlogsPage(props: BlogPageProps) {
 								)}>
 								<Image
 									src='/about-us.jpeg'
+									// src={`http://185.19.201.5:1000/file/${data?.image}`}
 									alt=''
 									height={256}
 									width={400}
@@ -179,10 +216,10 @@ export default function BlogsPage(props: BlogPageProps) {
 							/>
 							<h3 className='mt-8 text-sm text-secondary-500'>برچسب‌های وبلاگ</h3>
 							<ul className='mt-6 flex flex-wrap gap-x-2 gap-y-4'>
-								<SearchTag text='بر چسب شماره یک' selected />
-								<SearchTag text='بر چسب شماره دو' />
-								<SearchTag text='بر چسب سه' />
-								<SearchTag text='بر چسب چهارم' />
+								<SearchTag text={data?.tag[0]} selected />
+								<SearchTag text={data?.tag[1]} />
+								<SearchTag text={data?.tag[2]} />
+								<SearchTag text={data?.tag[2]} />
 							</ul>
 						</section>
 						<section className=''>

@@ -1,9 +1,9 @@
 "use client"
-import { useRef, useState, type FC, useEffect } from "react"
-import { cn } from "~/lib/utils"
 import { useInView } from "framer-motion"
-import { InfoSectionTabLink } from "./infoSectionTabLink"
+import { useEffect, useRef, useState, type FC } from "react"
+import TextComment from "../textComment"
 import { InfoSectionSpecItem } from "./infoSectionSpecItem"
+import { InfoSectionTabLink } from "./infoSectionTabLink"
 
 export const InfoSection: FC = () => {
 	const [activeSection, setActiveSection] = useState(0)
@@ -94,7 +94,12 @@ export const InfoSection: FC = () => {
 				</div>
 			</div>
 			<div ref={commentsRef} id='comments' className='mt-4 lg:mt-8'>
-				<div className='lg:py lg:px-16-10 rounded-2xl border border-secondary-50 bg-fa p-6 text-sm text-secondary'></div>
+				<div className='lg:py lg:px-16-10 rounded-2xl border border-secondary-50 bg-fa p-6 text-sm text-secondary'>
+					<TextComment label={""} placeholder={"نظر خود را وارد کنید ..."}></TextComment>
+					<div className='flex justify-between'>
+						<p className='text-lg text-secondary'>نظرات شما:</p>
+					</div>
+				</div>
 			</div>
 		</div>
 	)

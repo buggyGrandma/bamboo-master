@@ -167,7 +167,31 @@ export default function SignIn() {
 			</form>
 		)
 	}
+	// if ("") {
+	// 	return (
+	// 		<form onSubmit={""}>
+	// 			<div className='flex w-full items-center justify-center md:justify-between'>
+	// 				<h1 className='text-base font-extrabold text-secondary'>اطلاعات خود را وارد کنید</h1>
+	// 				<div className='hidden md:block'>بامبو</div>
+	// 			</div>
+	// 			<div className='mt-8 flex flex-col items-start gap-4 md:mt-6'>
+	// 				<Input
+	// 					label='نام و نام خانوادگی'
+	// 					placeholder='نام و نام خانوادگی خود را وارد کنید .'
+	// 				/>
+	// 				<Input label='نوع حیوان خانگی' placeholder='نوع حیوان خانگی خود را انتخاب کنید .' />
+	// 				<Input label='نام سگ شما' placeholder=' اسم حیوان خانگی خود را وارد کنید .' />
+	// 				<Input label='نام گربه شما' placeholder=' اسم حیوان خانگی خود را وارد کنید .' />
+	// 			</div>
 
+	// 			<button
+	// 				type='submit'
+	// 				className='mt-8 flex h-12 w-full items-center justify-center rounded-lg bg-primary text-sm font-bold text-fa transition-[filter] disabled:grayscale md:mt-6'>
+	// 				ثبت اطلاعات و ورود
+	// 			</button>
+	// 		</form>
+	// 	)
+	// }
 	return (
 		<form onSubmit={onOtpFormSubmit}>
 			<div className='flex items-center justify-between'>
