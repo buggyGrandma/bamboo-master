@@ -1,9 +1,20 @@
 "use client"
+import { useMutation } from "@tanstack/react-query"
+import axios from "axios"
 import { useInView } from "framer-motion"
 import { useEffect, useRef, useState, type FC } from "react"
 import TextComment from "../textComment"
 import { InfoSectionSpecItem } from "./infoSectionSpecItem"
 import { InfoSectionTabLink } from "./infoSectionTabLink"
+
+type CommentData = {
+	text: string
+	id: number
+	token: string
+	rate: number
+	type: string
+	account: string
+}
 
 export const InfoSection: FC = () => {
 	const [activeSection, setActiveSection] = useState(0)
@@ -16,6 +27,52 @@ export const InfoSection: FC = () => {
 	})
 	const commentsIsInView = useInView(commentsRef, {
 		margin: "0px 0px -50% 0px"
+	})
+	// const mutation = useMutation("postComment", (postData: CommentData) =>
+	// 	fetch("http://185.19.201.5:1000/comment/commenting", {
+	// 		method: "POST",
+	// 		headers: {
+	// 			"Content-Type": "application/json"
+	// 		},
+	// 		body: JSON.stringify(postData)
+	// 	}).then((res) => res.json())
+	// )
+	// const addComment = useMutation({
+	// 	mutationFn: (cmt: CommentData) =>
+	// 		axios.post("http://185.19.201.5:1000/comment/commenting", cmt).then((res) => res.data)
+	// })
+	// const addComment = useMutation({
+	// 	mutationFn: async (cmt: CommentData) => {
+	// 		const res = await axios.post("http://185.19.201.5:1000/comment/commenting", cmt)
+	// 		console.log("Response data:", res.data)
+	// 		return res.data
+	// 	}
+	// })
+	const addComment = useMutation({
+		mutationFn: (cmt: CommentData) => {
+			const { account, text, rate, type, id } = cmt
+
+			const config = {
+				headers: {
+					Authorization: "Bearer YOUR_TOKEN_HERE"
+				}
+			}
+
+			const requestBody = {
+				account: account,
+				text: text,
+				rate: rate,
+				type: type,
+				id: id
+			}
+
+			return axios
+				.post("http://185.19.201.5:1000/comment/commenting", requestBody, config)
+				.then((res) => {
+					console.log("Response data:", res.data)
+					return res.data
+				})
+		}
 	})
 
 	useEffect(() => {
@@ -33,7 +90,26 @@ export const InfoSection: FC = () => {
 
 		setActiveSection(newActiveSection)
 	}, [activeSection, commentsIsInView, descriptionIsInView, specsIsInView])
+	// const handleSubmitComment = async (commentData) => {
+	// 	try {
+	// 		await mutation.mutateAsync(commentData)
+	// 		console.log("Comment posted successfully!")
+	// 	} catch (error) {
+	// 		console.error("An error occurred while posting the comment:", error)
+	// 	}
+	// }
+	const handleSubmitComment = async () => {
+		const result = addComment.mutate({
+			text: "heeellloooo",
+			id: 0,
+			token: "",
+			rate: 0,
+			type: "",
+			account: ""
+		})
 
+		console.log("Result data:", result)
+	}
 	return (
 		<div className='pt-8 lg:p-10 lg:pt-7'>
 			<div className='sticky top-0'>
@@ -96,9 +172,10 @@ export const InfoSection: FC = () => {
 			<div ref={commentsRef} id='comments' className='mt-4 lg:mt-8'>
 				<div className='lg:py lg:px-16-10 rounded-2xl border border-secondary-50 bg-fa p-6 text-sm text-secondary'>
 					<TextComment label={""} placeholder={"نظر خود را وارد کنید ..."}></TextComment>
-					<div className='flex justify-between'>
+					<button onClick={handleSubmitComment}>Submit Comment</button>
+					{/* <div className='flex justify-between'>
 						<p className='text-lg text-secondary'>نظرات شما:</p>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</div>
