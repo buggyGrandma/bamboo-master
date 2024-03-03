@@ -44,7 +44,7 @@ const TextComment = ({ label, star = false, placeholder, OnTextChange, OnRateCha
 								/>
 								<Star
 									key={i}
-									className={`text-secondary-400 hover:text-orange-200  ${i <= rate && "text-orange-400"}`}
+									className={` hover:text-orange-200  ${i <= rate ? "text-orange-400" : "text-secondary-400"}`}
 								/>
 							</label>
 						))}
