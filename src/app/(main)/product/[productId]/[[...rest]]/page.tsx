@@ -14,7 +14,7 @@ type ProductPageProps = {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
-	console.log(params)
+	console.log(params.productId)
 	// const fetchProduct = () => AXIOS.get(`product/${title}`).then((res) => res.data)
 	// const { data } = useQuery({
 	// 	queryKey: ["product"],
@@ -31,7 +31,7 @@ export default function ProductPage({ params }: ProductPageProps) {
 						<ImageGallery />
 						<HeadingInfo />
 					</div>
-					<InfoSection />
+					<InfoSection id={parseInt(params.productId)} />
 				</div>
 			</div>
 		</div>

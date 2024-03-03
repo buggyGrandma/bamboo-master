@@ -1,5 +1,6 @@
 "use client"
 import { useMutation } from "@tanstack/react-query"
+import Cookies from "universal-cookie"
 import axios from "axios"
 import { useInView } from "framer-motion"
 import { useEffect, useRef, useState, type FC } from "react"
@@ -16,7 +17,7 @@ type TComment = {
 	account: string
 }
 
-export const InfoSection: FC = () => {
+export const InfoSection = ({ id }: { id: number }) => {
 	const [activeSection, setActiveSection] = useState(0)
 	const descriptionRef = useRef<HTMLDivElement>(null)
 	const specsRef = useRef<HTMLDivElement>(null)
@@ -30,12 +31,13 @@ export const InfoSection: FC = () => {
 	})
 	const [text, setText] = useState("")
 	const [rate, setRate] = useState(1)
+	const cookies = new Cookies(null, { path: "/" })
 	const addComment = useMutation({
 		mutationFn: async (cmt: TComment) => {
 			const { account, text, rate, type, id } = cmt
 			const config = {
 				headers: {
-					token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiMDkzOTI2NzMyMjEiLCJpYXQiOjE3MDk0NTIzNjEsImV4cCI6MTcwOTYyNTE2MX0.KibBOc61GLu6akdl4vt0ndCNfXVoBPrMldysHvWw3H4"
+					token: cookies.get("token")
 				}
 			}
 			const requestBody = {
@@ -73,10 +75,10 @@ export const InfoSection: FC = () => {
 	const handleSubmitComment = async () => {
 		const result = addComment.mutate({
 			text,
-			id: 0,
+			id,
 			rate,
 			type: "product",
-			account: "09392673221"
+			account: cookies.get("account")
 		})
 
 		console.log("Result data:", result)

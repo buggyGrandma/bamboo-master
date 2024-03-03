@@ -61,6 +61,7 @@ export default function SignIn() {
 				setLoading(false)
 				return
 			}
+			cookies.set("account", formData.get("username"))
 			setOtpExpire(new Date(response.expire))
 			setLoading(false)
 		} catch (error) {
