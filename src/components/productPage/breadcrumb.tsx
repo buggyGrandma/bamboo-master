@@ -2,7 +2,7 @@ import Link from "next/link"
 import type { FC } from "react"
 import Arrow from "~/lib/icons/arrow"
 
-export const Breadcrumb: FC = () => {
+export const Breadcrumb = ({ title }: { title: string }) => {
 	return (
 		<nav className='hidden lg:block' aria-label='breadcrumb'>
 			<ol className='font-peyda flex items-center gap-2 text-xs text-secondary-400 [&>li:last-child]:text-secondary'>
@@ -13,11 +13,11 @@ export const Breadcrumb: FC = () => {
 				<ThreeDots />
 				<Arrow direction='left' className='h-4 w-4 text-secondary-100' />
 				<li>
-					<Link href='/search'>غذای خشک سگ</Link>
+					<Link href='/search'>محصولات</Link>
 				</li>
 				<Arrow direction='left' className='h-4 w-4 text-secondary-100' />
 				<li aria-current='page'>
-					<span>غذای خشک سگ مینی لایت ویت رویال کنین</span>
+					<span>{title}</span>
 				</li>
 			</ol>
 		</nav>

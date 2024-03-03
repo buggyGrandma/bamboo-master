@@ -8,7 +8,7 @@ import Arrow from "~/lib/icons/arrow"
 import { cn } from "~/lib/utils"
 import { AXIOS } from "../../../axios.config"
 import { SaleItem } from "./saleItem"
-interface ISalesItem {
+export interface ISalesItem {
 	classes: string[]
 	description: string
 	discount: number
