@@ -1,4 +1,5 @@
 "use client"
+import Cookies from "universal-cookie"
 import { Switch } from "@headlessui/react"
 import Link from "next/link"
 import type { ChangeEventHandler, FormEventHandler } from "react"
@@ -23,6 +24,7 @@ export default function SignIn() {
 	const [isAuth, setAuth] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const [otp, setOtp] = useState("")
+	const cookies = new Cookies(null, { path: "/" })
 	useEffect(() => {
 		if (otpExpire === null) {
 			return
@@ -79,6 +81,7 @@ export default function SignIn() {
 				if (response.token !== "wrong") {
 					setLoading(false)
 					setAuth(true)
+					cookies.set("token", response.token)
 					toast.success("وارد شدید.")
 				} else {
 					toast.error("خطا در ارتباط با سرور.")
