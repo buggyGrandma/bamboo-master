@@ -1,19 +1,8 @@
-import Image from "next/image"
-import Link from "next/link"
 import { PhoneHeader } from "~/components/phoneHeader"
 import { Breadcrumb } from "~/components/productPage/breadcrumb"
 import { HeadingInfo } from "~/components/productPage/headingInfo"
 import { ImageGallery } from "~/components/productPage/imageGallery"
 import { InfoSection } from "~/components/productPage/infoSection"
-import Arrow from "~/lib/icons/arrow"
-import Star from "~/lib/icons/star"
-import TickSquare from "~/lib/icons/tickSquare"
-import Work from "~/lib/icons/work"
-import { formatPrice } from "~/lib/utils"
-import aboutUsImage from "~public/about-us.jpeg"
-import fishBowlImage from "~public/fish-bowl-amico.png"
-import messengerImage from "~public/messenger-amico.png"
-import mobileMarketingImage from "~public/mobile-marketing-bro.png"
 
 type ProductPageProps = {
 	params: {

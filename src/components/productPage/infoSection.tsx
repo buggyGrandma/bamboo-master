@@ -6,11 +6,11 @@ import { useEffect, useRef, useState, type FC } from "react"
 import TextComment from "../textComment"
 import { InfoSectionSpecItem } from "./infoSectionSpecItem"
 import { InfoSectionTabLink } from "./infoSectionTabLink"
+import SendComment from "~/lib/icons/sendComment"
 
-type CommentData = {
+type TComment = {
 	text: string
 	id: number
-	token: string
 	rate: number
 	type: string
 	account: string
@@ -28,50 +28,30 @@ export const InfoSection: FC = () => {
 	const commentsIsInView = useInView(commentsRef, {
 		margin: "0px 0px -50% 0px"
 	})
-	// const mutation = useMutation("postComment", (postData: CommentData) =>
-	// 	fetch("http://185.19.201.5:1000/comment/commenting", {
-	// 		method: "POST",
-	// 		headers: {
-	// 			"Content-Type": "application/json"
-	// 		},
-	// 		body: JSON.stringify(postData)
-	// 	}).then((res) => res.json())
-	// )
-	// const addComment = useMutation({
-	// 	mutationFn: (cmt: CommentData) =>
-	// 		axios.post("http://185.19.201.5:1000/comment/commenting", cmt).then((res) => res.data)
-	// })
-	// const addComment = useMutation({
-	// 	mutationFn: async (cmt: CommentData) => {
-	// 		const res = await axios.post("http://185.19.201.5:1000/comment/commenting", cmt)
-	// 		console.log("Response data:", res.data)
-	// 		return res.data
-	// 	}
-	// })
+	const [text, setText] = useState("")
+	const [rate, setRate] = useState(1)
 	const addComment = useMutation({
-		mutationFn: (cmt: CommentData) => {
+		mutationFn: async (cmt: TComment) => {
 			const { account, text, rate, type, id } = cmt
-
 			const config = {
 				headers: {
-					Authorization: "Bearer YOUR_TOKEN_HERE"
+					token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiMDkzOTI2NzMyMjEiLCJpYXQiOjE3MDk0NTIzNjEsImV4cCI6MTcwOTYyNTE2MX0.KibBOc61GLu6akdl4vt0ndCNfXVoBPrMldysHvWw3H4"
 				}
 			}
-
 			const requestBody = {
-				account: account,
-				text: text,
-				rate: rate,
-				type: type,
-				id: id
+				account,
+				text,
+				rate,
+				type,
+				id
 			}
-
-			return axios
-				.post("http://185.19.201.5:1000/comment/commenting", requestBody, config)
-				.then((res) => {
-					console.log("Response data:", res.data)
-					return res.data
-				})
+			const res = await axios.post(
+				"http://185.19.201.5:1000/comment/commenting",
+				requestBody,
+				config
+			)
+			console.log("Response data:", res.data)
+			return res.data
 		}
 	})
 
@@ -90,22 +70,13 @@ export const InfoSection: FC = () => {
 
 		setActiveSection(newActiveSection)
 	}, [activeSection, commentsIsInView, descriptionIsInView, specsIsInView])
-	// const handleSubmitComment = async (commentData) => {
-	// 	try {
-	// 		await mutation.mutateAsync(commentData)
-	// 		console.log("Comment posted successfully!")
-	// 	} catch (error) {
-	// 		console.error("An error occurred while posting the comment:", error)
-	// 	}
-	// }
 	const handleSubmitComment = async () => {
 		const result = addComment.mutate({
-			text: "heeellloooo",
+			text,
 			id: 0,
-			token: "",
-			rate: 0,
-			type: "",
-			account: ""
+			rate,
+			type: "product",
+			account: "09392673221"
 		})
 
 		console.log("Result data:", result)
@@ -171,8 +142,20 @@ export const InfoSection: FC = () => {
 			</div>
 			<div ref={commentsRef} id='comments' className='mt-4 lg:mt-8'>
 				<div className='lg:py lg:px-16-10 rounded-2xl border border-secondary-50 bg-fa p-6 text-sm text-secondary'>
-					<TextComment label={""} placeholder={"نظر خود را وارد کنید ..."}></TextComment>
-					<button onClick={handleSubmitComment}>Submit Comment</button>
+					<div className='relative'>
+						<button
+							className='absolute left-4 top-5 z-10 flex items-center justify-center gap-2 rounded-md border-2 border-primary bg-white px-12 py-2 text-primary'
+							onClick={handleSubmitComment}>
+							<SendComment />
+							ارسال نظر
+						</button>
+						<TextComment
+							OnRateChange={(e) => setRate(e)}
+							OnTextChange={(e) => setText(e)}
+							label={""}
+							placeholder={"نظر خود را وارد کنید ..."}
+						/>
+					</div>
 					{/* <div className='flex justify-between'>
 						<p className='text-lg text-secondary'>نظرات شما:</p>
 					</div> */}
