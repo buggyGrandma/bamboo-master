@@ -1,3 +1,4 @@
+"use client"
 import { PhoneHeader } from "~/components/phoneHeader"
 import { Breadcrumb } from "~/components/productPage/breadcrumb"
 import { HeadingInfo } from "~/components/productPage/headingInfo"
@@ -13,6 +14,13 @@ type ProductPageProps = {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
+	console.log(params)
+	// const fetchProduct = () => AXIOS.get(`product/${title}`).then((res) => res.data)
+	// const { data } = useQuery({
+	// 	queryKey: ["product"],
+	// 	queryFn: fetchProduct
+	// })
+
 	return (
 		<div className='bg-white pb-28 lg:bg-fa'>
 			<PhoneHeader titleNormal='جزئیات' titleColored='محصول' />

@@ -86,6 +86,7 @@ export const SaleSection: FC = () => {
 										i === 5 && "me-6 lg:me-12"
 									)}>
 									<SaleItem
+										_id={product._id}
 										discount={product.discount}
 										expiration={product.importantProperties.expiration}
 										price={product.price}

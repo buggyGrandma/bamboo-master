@@ -1,6 +1,6 @@
+"use client"
 import Image from "next/image"
 import Link from "next/link"
-import type { FC } from "react"
 import { cn, formatPrice } from "~/lib/utils"
 interface Props {
 	discount: number
@@ -8,10 +8,11 @@ interface Props {
 	expiration: string
 	remaining: number
 	price: number
+	_id: number
 }
-export const SaleItem = ({ discount, title, expiration, remaining, price }: Props) => {
+export const SaleItem = ({ discount, title, expiration, remaining, price, _id }: Props) => {
 	return (
-		<Link href='/product/1'>
+		<Link href={`/product/${_id}`}>
 			<div className='persian-number relative rounded-2xl bg-white p-4 shadow-[0px_2px_16px_0px_rgba(0,0,0,0.15)] lg:p-5 xl:p-6 2xl:p-8'>
 				<div
 					className={cn(
