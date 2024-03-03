@@ -24,8 +24,8 @@ export const AddToCartButton: FC<AddToCartButtonProps> = ({ className }) => {
 							height='16'
 							viewBox='0 0 17 16'
 							fill='none'>
-							<path d='M0.5 8.00003H16.5' stroke='#FF5722' stroke-width='3' />
-							<path d='M8.5 3.05176e-05L8.5 16' stroke='#FF5722' stroke-width='3' />
+							<path d='M0.5 8.00003H16.5' stroke='#FF5722' strokeWidth='3' />
+							<path d='M8.5 3.05176e-05L8.5 16' stroke='#FF5722' strokeWidth='3' />
 						</svg>
 					</button>
 					<div className='persian-number w-8 text-center text-lg font-bold text-secondary'>
@@ -40,7 +40,7 @@ export const AddToCartButton: FC<AddToCartButtonProps> = ({ className }) => {
 							height='16'
 							viewBox='0 0 17 16'
 							fill='none'>
-							<path d='M0.5 8.00003H16.5' stroke='#FF5722' stroke-width='3' />
+							<path d='M0.5 8.00003H16.5' stroke='#FF5722' strokeWidth='3' />
 						</svg>
 					</button>
 				</div>

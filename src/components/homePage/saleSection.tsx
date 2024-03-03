@@ -39,7 +39,6 @@ export const SaleSection: FC = () => {
 		queryKey: ["sepcials"],
 		queryFn: fetchSpecials
 	})
-	console.log(data?.products)
 	return (
 		<section className='mt-6 lg:container lg:mt-16'>
 			<div className='bg-primary py-6 lg:rounded-2xl lg:py-12'>

@@ -31,25 +31,22 @@ const TextComment = ({ label, star = false, placeholder, OnTextChange, OnRateCha
 					</p>
 					<div className='flex gap-2'>
 						{new Array(5).fill(0).map((_, i) => (
-							<>
-								<label>
-									<input
-										className='hidden'
-										name='star'
-										id={String(i)}
-										onChange={(e) => {
-											console.log(e.target.id)
-											setRate(parseInt(e.target.id))
-											OnRateChange(parseInt(e.target.id) + 1)
-										}}
-										type='radio'
-									/>
-									<Star
-										key={i}
-										className={`text-secondary-400 hover:text-orange-200  ${i <= rate && "text-orange-400"}`}
-									/>
-								</label>
-							</>
+							<label key={i}>
+								<input
+									className='hidden'
+									name='star'
+									id={String(i)}
+									onChange={(e) => {
+										setRate(parseInt(e.target.id))
+										OnRateChange(parseInt(e.target.id) + 1)
+									}}
+									type='radio'
+								/>
+								<Star
+									key={i}
+									className={`text-secondary-400 hover:text-orange-200  ${i <= rate && "text-orange-400"}`}
+								/>
+							</label>
 						))}
 					</div>
 				</div>

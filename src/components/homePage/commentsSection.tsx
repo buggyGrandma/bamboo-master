@@ -7,7 +7,6 @@ import Comment, { TComment } from "./comment"
 const CommentsSection = () => {
 	const fetchComments = () =>
 		AXIOS.get<TComment[]>("comment/chosen").then((res) => {
-			console.log(res.data)
 			return res.data
 		})
 	const { data: comments } = useQuery({
