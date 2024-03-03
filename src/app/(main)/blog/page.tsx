@@ -7,6 +7,8 @@ import { PhoneHeader } from "~/components/phoneHeader"
 import { SearchInput } from "~/components/searchInput"
 import { cn } from "~/lib/utils"
 import { AXIOS } from "../../../../axios.config"
+import { e2p } from "~/lib/digitConverter"
+import moment from "jalali-moment"
 
 export type TBlog = {
 	title: string
@@ -106,7 +108,13 @@ export default function BlogsPage(props: BlogPageProps) {
 											/>
 											<div className='ms-2 xl:ms-4'>{blog.writer.name}</div>
 											<div className='ms-auto'>
-												<span dir='ltr'>۱۳۹۸/۱۰/۲۱ - ۱۲:۵۰</span>
+												<span dir='ltr'>
+													{e2p(
+														moment(blog?.date, "YYYY/MM/DD")
+															.locale("fa")
+															.format("YYYY/M/D - HH:mm")
+													)}
+												</span>
 											</div>
 										</div>
 										<h3 className='text-lg font-bold text-secondary xl:text-2xl xl:font-extrabold'>
@@ -180,7 +188,13 @@ export default function BlogsPage(props: BlogPageProps) {
 														{blog.title}
 													</h3>
 													<div className='ms-auto'>
-														<span dir='ltr'>۱۳۹۸/۱۰/۲۱ - ۱۲:۵۰</span>
+														<span dir='ltr'>
+															{e2p(
+																moment(blog?.date, "YYYY/MM/DD")
+																	.locale("fa")
+																	.format("YYYY/M/D - HH:mm")
+															)}
+														</span>
 													</div>
 												</div>
 											</li>
