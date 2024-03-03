@@ -10,6 +10,7 @@ import type { Nullable } from "~/lib/typeHelpers"
 import { cn } from "~/lib/utils"
 import { AXIOS } from "../../../../axios.config"
 import { OtpInput } from "./otpInput"
+import Input from "~/components/contactPage/input"
 
 const otpResponseZod = z.object({
 	expires: z.string().datetime()
@@ -19,6 +20,7 @@ export default function SignIn() {
 	const [account, setAccount] = useState("")
 	const [remainingTime, setRemainingTime] = useState(120)
 	const [otpExpire, setOtpExpire] = useState<Nullable<Date>>(null)
+	const [isAuth, setAuth] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const [otp, setOtp] = useState("")
 	useEffect(() => {
@@ -76,6 +78,7 @@ export default function SignIn() {
 				}).then((res) => res.data)
 				if (response.token !== "wrong") {
 					setLoading(false)
+					setAuth(true)
 					toast.success("وارد شدید.")
 				} else {
 					toast.error("خطا در ارتباط با سرور.")
@@ -167,31 +170,31 @@ export default function SignIn() {
 			</form>
 		)
 	}
-	// if ("") {
-	// 	return (
-	// 		<form onSubmit={""}>
-	// 			<div className='flex w-full items-center justify-center md:justify-between'>
-	// 				<h1 className='text-base font-extrabold text-secondary'>اطلاعات خود را وارد کنید</h1>
-	// 				<div className='hidden md:block'>بامبو</div>
-	// 			</div>
-	// 			<div className='mt-8 flex flex-col items-start gap-4 md:mt-6'>
-	// 				<Input
-	// 					label='نام و نام خانوادگی'
-	// 					placeholder='نام و نام خانوادگی خود را وارد کنید .'
-	// 				/>
-	// 				<Input label='نوع حیوان خانگی' placeholder='نوع حیوان خانگی خود را انتخاب کنید .' />
-	// 				<Input label='نام سگ شما' placeholder=' اسم حیوان خانگی خود را وارد کنید .' />
-	// 				<Input label='نام گربه شما' placeholder=' اسم حیوان خانگی خود را وارد کنید .' />
-	// 			</div>
+	if (isAuth) {
+		return (
+			<form>
+				<div className='flex w-full items-center justify-center md:justify-between'>
+					<h1 className='text-base font-extrabold text-secondary'>اطلاعات خود را وارد کنید</h1>
+					<div className='hidden md:block'>بامبو</div>
+				</div>
+				<div className='mt-8 flex flex-col items-start gap-4 md:mt-6'>
+					<Input
+						label='نام و نام خانوادگی'
+						placeholder='نام و نام خانوادگی خود را وارد کنید .'
+					/>
+					<Input label='نوع حیوان خانگی' placeholder='نوع حیوان خانگی خود را انتخاب کنید .' />
+					<Input label='نام سگ شما' placeholder=' اسم حیوان خانگی خود را وارد کنید .' />
+					<Input label='نام گربه شما' placeholder=' اسم حیوان خانگی خود را وارد کنید .' />
+				</div>
 
-	// 			<button
-	// 				type='submit'
-	// 				className='mt-8 flex h-12 w-full items-center justify-center rounded-lg bg-primary text-sm font-bold text-fa transition-[filter] disabled:grayscale md:mt-6'>
-	// 				ثبت اطلاعات و ورود
-	// 			</button>
-	// 		</form>
-	// 	)
-	// }
+				<button
+					type='submit'
+					className='mt-8 flex h-12 w-full items-center justify-center rounded-lg bg-primary text-sm font-bold text-fa transition-[filter] disabled:grayscale md:mt-6'>
+					ثبت اطلاعات و ورود
+				</button>
+			</form>
+		)
+	}
 	return (
 		<form onSubmit={onOtpFormSubmit}>
 			<div className='flex items-center justify-between'>
