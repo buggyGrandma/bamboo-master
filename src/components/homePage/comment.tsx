@@ -1,6 +1,6 @@
 import React from "react"
 import Star from "~/lib/icons/star"
-export type TComment = {
+type TComment = {
 	name: string
 	rate: number
 	text: string

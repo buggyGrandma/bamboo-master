@@ -1,5 +1,5 @@
 "use client"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import Image from "next/image"
 import moment from "jalali-moment"
 import Link from "next/link"
@@ -11,6 +11,13 @@ import { cn } from "~/lib/utils"
 import { AXIOS } from "../../../../../axios.config"
 import { TBlog } from "../page"
 import { e2p, p2e } from "~/lib/digitConverter"
+import axios from "axios"
+import { toast } from "sonner"
+import { TComment } from "~/components/productPage/infoSection"
+import Cookies from "universal-cookie"
+import { useState } from "react"
+import TextComment from "~/components/textComment"
+import SendComment from "~/lib/icons/sendComment"
 
 type BlogPageProps = {
 	params: { slug: string }
@@ -26,6 +33,35 @@ type BlogPageProps = {
 // }
 
 export default function BlogPage(props: BlogPageProps) {
+	const cookies = new Cookies(null, { path: "/" })
+	const [text, setText] = useState("")
+	const [rate, setRate] = useState(1)
+	const addComment = useMutation({
+		mutationFn: async (cmt: TComment) => {
+			const { account, text, rate, type, id } = cmt
+			const config = {
+				headers: {
+					token: cookies.get("token")
+				}
+			}
+			const requestBody = {
+				account,
+				text,
+				rate,
+				type,
+				id
+			}
+			const res = await axios.post(
+				"http://185.19.201.5:1000/comment/commenting",
+				requestBody,
+				config
+			)
+			toast.success(res.data)
+			setText("")
+			setRate(1)
+			return res.data
+		}
+	})
 	const fetchBlog = async () => {
 		const res = await AXIOS.get<TBlog>(`blog/${props.params.slug}`)
 		return res.data
@@ -34,7 +70,17 @@ export default function BlogPage(props: BlogPageProps) {
 		queryKey: ["blog"],
 		queryFn: fetchBlog
 	})
+	const handleSubmitComment = async () => {
+		const result = addComment.mutate({
+			text,
+			id: 1, //_id
+			rate,
+			type: "product",
+			account: cookies.get("account")
+		})
 
+		console.log("Result data:", result)
+	}
 	return (
 		<div className='bg-white pb-28 lg:bg-fa'>
 			<PhoneHeader titleNormal='وبلاگ' titleColored='پت شاپ' />
@@ -115,6 +161,20 @@ export default function BlogPage(props: BlogPageProps) {
 						<ul className='mt-6 flex flex-wrap gap-2'>
 							{blog?.tag.map((item, i) => <SearchTag text={item} selected={i === 0} />)}
 						</ul>
+						<div className='relative'>
+							<button
+								className='absolute left-4 top-5 z-10 flex items-center justify-center gap-2 rounded-md border-2 border-primary bg-white px-12 py-2 text-primary'
+								onClick={handleSubmitComment}>
+								<SendComment />
+								ارسال نظر
+							</button>
+							<TextComment
+								OnRateChange={(e) => setRate(e)}
+								OnTextChange={(e) => setText(e)}
+								label={""}
+								placeholder={"نظر خود را وارد کنید ..."}
+							/>
+						</div>
 					</section>
 					<div className='hidden lg:block'>
 						<section className='w-[425px] max-w-[30vw] rounded-2xl bg-white lg:border lg:border-secondary-50 lg:px-8 lg:py-12'>

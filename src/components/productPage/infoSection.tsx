@@ -11,7 +11,7 @@ import SendComment from "~/lib/icons/sendComment"
 import { ISalesItem } from "../homePage/saleSection"
 import { toast } from "sonner"
 
-type TComment = {
+export type TComment = {
 	text: string
 	id: number
 	rate: number
