@@ -8,13 +8,13 @@ import { SearchInput } from "~/components/searchInput"
 import { cn } from "~/lib/utils"
 import { AXIOS } from "../../../../axios.config"
 
-interface IBlog {
+export type TBlog = {
 	title: string
 	text: string
 	summery: string
 	image: string
 	mark: string
-	tag: string
+	tag: string[]
 	date: string
 	writer: {
 		name: string
@@ -35,15 +35,14 @@ type BlogPageProps = {
 // }
 
 export default function BlogsPage(props: BlogPageProps) {
-	const fetchBlog = async () => {
-		const res = await AXIOS.get<{ blogs: IBlog[] }>("blog/مقاله 1")
+	const fetchBlogs = async () => {
+		const res = await AXIOS.get<TBlog[]>("blog/list/1")
 		return res.data
 	}
-	const { data } = useQuery({
+	const { data: blogs } = useQuery({
 		queryKey: ["blogs"],
-		queryFn: fetchBlog
+		queryFn: fetchBlogs
 	})
-	console.log(data)
 	return (
 		<div className='bg-white pb-28 lg:bg-fa'>
 			{/* <div className='flex'>
@@ -71,140 +70,77 @@ export default function BlogsPage(props: BlogPageProps) {
 								"[&>li:not(:first-of-type)]:border-t [&>li:not(:first-of-type)]:border-secondary-50 [&>li]:py-8",
 								"lg:[&>li]:px-8"
 							)}>
-							<li
-								className={cn(
-									"flex flex-col gap-4",
-									"md:flex-row md:gap-8",
-									"lg:flex-col lg:gap-4",
-									"xl:flex-row xl:gap-8"
-								)}>
-								<Image
-									src='/about-us.jpeg'
-									alt=''
-									height={256}
-									width={400}
+							{blogs?.slice(0, 3).map((blog) => (
+								<li
 									className={cn(
-										"h-52 w-full rounded-2xl object-cover",
-										"md:w-52",
-										"lg:w-full",
-										"xl:h-64 xl:w-64"
-									)}
-								/>
-								<div className='flex flex-col gap-[18px]'>
-									<div className='flex items-center text-xs text-secondary xl:text-sm'>
-										<Image
-											src='/about-us.jpeg'
-											// src={`http://185.19.201.5:1000/file/${data?.pofileWriter.profile.jpg}`}
-											alt=''
-											height={40}
-											width={40}
-											className={cn(
-												"h-8 w-8 rounded-full object-cover",
-												"md:h-10 md:w-10",
-												"lg:h-8 lg:w-8",
-												"xl:h-10 xl:w-10"
-											)}
-										/>
-										<div className='ms-2 xl:ms-4'>{data?.writer.name}</div>
-										<div className='ms-auto'>
-											<span dir='ltr'>۱۳۹۸/۱۰/۲۱ - ۱۲:۵۰</span>
+										"flex flex-col gap-4",
+										"md:flex-row md:gap-8",
+										"lg:flex-col lg:gap-4",
+										"xl:flex-row xl:gap-8"
+									)}>
+									<img
+										src={`http://185.19.201.5:1000/file/${blog?.image}`}
+										alt=''
+										height={256}
+										width={400}
+										className={cn(
+											"h-52 w-full rounded-2xl object-cover",
+											"md:w-52",
+											"lg:w-full",
+											"xl:h-64 xl:w-64"
+										)}
+									/>
+									<div className='flex flex-col gap-[18px]'>
+										<div className='flex items-center text-xs text-secondary xl:text-sm'>
+											<img
+												src={`http://185.19.201.5:1000/file/${blog?.writer.image}`}
+												alt=''
+												height={40}
+												width={40}
+												className={cn(
+													"h-8 w-8 rounded-full object-cover",
+													"md:h-10 md:w-10",
+													"lg:h-8 lg:w-8",
+													"xl:h-10 xl:w-10"
+												)}
+											/>
+											<div className='ms-2 xl:ms-4'>{blog.writer.name}</div>
+											<div className='ms-auto'>
+												<span dir='ltr'>۱۳۹۸/۱۰/۲۱ - ۱۲:۵۰</span>
+											</div>
+										</div>
+										<h3 className='text-lg font-bold text-secondary xl:text-2xl xl:font-extrabold'>
+											{blog.title}
+										</h3>
+										<div className='flex flex-wrap gap-1'>
+											{blog.tag.map((item) => (
+												<div className='hidden self-start rounded-full border border-primary px-6 py-2 text-xs text-primary md:block lg:hidden xl:block'>
+													{item}
+												</div>
+											))}
+										</div>
+
+										<p className='text-sm text-secondary'>
+											{blog.summery}
+											<Link
+												href={`/blog/${blog.title}`}
+												className='ms-1 hidden font-semibold text-primary underline underline-offset-4 md:inline-block lg:hidden xl:inline-block'>
+												ادامه مطالب
+											</Link>
+										</p>
+										<div className='grid grid-cols-2 gap-4 md:hidden lg:grid xl:hidden'>
+											<Link
+												href={`/blog/${blog.title}`}
+												className='rounded-lg bg-primary py-4 text-center text-sm font-semibold text-fa'>
+												ادامه مطالب
+											</Link>
+											<div className='rounded-lg border border-primary py-4 text-center text-sm font-semibold text-primary'>
+												{blog.tag[0]}
+											</div>
 										</div>
 									</div>
-									<h3 className='text-lg font-bold text-secondary xl:text-2xl xl:font-extrabold'>
-										{data?.title}
-									</h3>
-									<div className='hidden self-start rounded-full border border-primary px-6 py-2 text-xs text-primary md:block lg:hidden xl:block'>
-										دانستنی های گربه
-									</div>
-									<p className='text-sm text-secondary'>
-										{data?.summery}
-										<Link
-											href='/blog/slug'
-											className='ms-1 hidden font-semibold text-primary underline underline-offset-4 md:inline-block lg:hidden xl:inline-block'>
-											ادامه مطالب
-										</Link>
-									</p>
-									<div className='grid grid-cols-2 gap-4 md:hidden lg:grid xl:hidden'>
-										<Link
-											href='/blog/slug'
-											className='rounded-lg bg-primary py-4 text-center text-sm font-semibold text-fa'>
-											ادامه مطالب
-										</Link>
-										<div className='rounded-lg border border-primary py-4 text-center text-sm font-semibold text-primary'>
-											دانستنی های گربه
-										</div>
-									</div>
-								</div>
-							</li>
-							<li
-								className={cn(
-									"flex flex-col gap-4",
-									"md:flex-row md:gap-8",
-									"lg:flex-col lg:gap-4",
-									"xl:flex-row xl:gap-8"
-								)}>
-								<Image
-									src='/about-us.jpeg'
-									// src={`http://185.19.201.5:1000/file/${data?.image}`}
-									alt=''
-									height={256}
-									width={400}
-									className={cn(
-										"h-52 w-full rounded-2xl object-cover",
-										"md:w-52",
-										"lg:w-full",
-										"xl:h-64 xl:w-64"
-									)}
-								/>
-								<div className='flex flex-col gap-[18px]'>
-									<div className='flex items-center text-xs text-secondary xl:text-sm'>
-										<Image
-											src='/about-us.jpeg'
-											alt=''
-											height={40}
-											width={40}
-											className={cn(
-												"h-8 w-8 rounded-full object-cover",
-												"md:h-10 md:w-10",
-												"lg:h-8 lg:w-8",
-												"xl:h-10 xl:w-10"
-											)}
-										/>
-										<div className='ms-2 xl:ms-4'>محمد رضا شریفی</div>
-										<div className='ms-auto'>
-											<span dir='ltr'>۱۳۹۸/۱۰/۲۱ - ۱۲:۵۰</span>
-										</div>
-									</div>
-									<h3 className='text-lg font-bold text-secondary xl:text-2xl xl:font-extrabold'>
-										علت نفس نفس زدن سگ چیست؟
-									</h3>
-									<div className='hidden self-start rounded-full border border-primary px-6 py-2 text-xs text-primary md:block lg:hidden xl:block'>
-										دانستنی های گربه
-									</div>
-									<p className='text-sm text-secondary'>
-										نفس نفس زدن در سگ‌ها در بیشتر مواقع، یک رفتار عادی تلقی می‌شود و
-										معمولا بعد از انجام فعالیت‌‌های حرکتی و یا در فصول گرم سال به وضوح
-										قابل مشاهده است. اما در برخی موارد ممکن است نفس نفس زدن طولانی مدت
-										سگ‌ها در شرایط و زمان خاص نگران کننده به نظر برسد. در صورتی که له له
-										زدن همراه ...
-										<Link
-											href='/blog/slug'
-											className='ms-1 hidden font-semibold text-primary underline underline-offset-4 md:inline-block lg:hidden xl:inline-block'>
-											ادامه مطالب
-										</Link>
-									</p>
-									<div className='grid grid-cols-2 gap-4 md:hidden lg:grid xl:hidden'>
-										<Link
-											href='/blog/slug'
-											className='rounded-lg bg-primary py-4 text-center text-sm font-semibold text-fa'>
-											ادامه مطالب
-										</Link>
-										<div className='rounded-lg border border-primary py-4 text-center text-sm font-semibold text-primary'>
-											دانستنی های گربه
-										</div>
-									</div>
-								</div>
-							</li>
+								</li>
+							))}
 						</ul>
 					</section>
 					<div className=''>
@@ -215,36 +151,40 @@ export default function BlogsPage(props: BlogPageProps) {
 								placeholder='موضوع خود را جستجو کنید'
 							/>
 							<h3 className='mt-8 text-sm text-secondary-500'>برچسب‌های وبلاگ</h3>
-							<ul className='mt-6 flex flex-wrap gap-x-2 gap-y-4'>
-								<SearchTag text={data?.tag[0]} selected />
-								<SearchTag text={data?.tag[1]} />
-								<SearchTag text={data?.tag[2]} />
-								<SearchTag text={data?.tag[2]} />
-							</ul>
+							{blogs && (
+								<ul className='mt-6 flex flex-wrap gap-x-2 gap-y-4'>
+									{blogs[0]?.tag.map((item, i) => (
+										<SearchTag text={item} selected={i === 0} />
+									))}
+								</ul>
+							)}
 						</section>
 						<section className=''>
 							<h3 className='text-sm text-secondary-500'>
 								محبوب ترین در <span className='text-primary'>وبلاگ</span>
 							</h3>
 							<div className='rounded-2xl bg-white lg:w-[425px] lg:border lg:border-secondary-50 lg:px-8 lg:py-12'>
-								<ul className='mt-6 flex flex-wrap gap-x-2 gap-y-4'>
-									<li className='flex'>
-										<Image
-											src='/about-us.jpeg'
-											alt=''
-											height={84}
-											width={85}
-											className={cn()}
-										/>
-										<div>
-											<h3 className='text-xs text-secondary xl:text-sm'>
-												علت نفس نفس زدن سگ چیست؟
-											</h3>
-											<div className='ms-auto'>
-												<span dir='ltr'>۱۳۹۸/۱۰/۲۱ - ۱۲:۵۰</span>
-											</div>
-										</div>
-									</li>
+								<ul className='mt-6 flex flex-col flex-wrap gap-x-2 gap-y-4'>
+									{blogs &&
+										blogs.slice(0, 4).map((blog) => (
+											<li className='flex '>
+												<img
+													src={`http://185.19.201.5:1000/file/${blog?.image}`}
+													alt=''
+													height={50}
+													width={50}
+													className={cn()}
+												/>
+												<div>
+													<h3 className='text-xs text-secondary xl:text-sm'>
+														{blog.title}
+													</h3>
+													<div className='ms-auto'>
+														<span dir='ltr'>۱۳۹۸/۱۰/۲۱ - ۱۲:۵۰</span>
+													</div>
+												</div>
+											</li>
+										))}
 								</ul>
 							</div>
 						</section>
