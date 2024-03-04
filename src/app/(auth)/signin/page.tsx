@@ -1,17 +1,20 @@
 "use client"
-import Cookies from "universal-cookie"
 import { Switch } from "@headlessui/react"
 import Link from "next/link"
 import type { ChangeEventHandler, FormEventHandler } from "react"
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
+import Cookies from "universal-cookie"
 import { z } from "zod"
+import CFilter from "~/app/(main)/search/components/CFilter"
+import LFilters from "~/app/(main)/search/components/LFilter"
+import { Filter } from "~/app/(main)/search/page"
+import Input from "~/components/contactPage/input"
 import Check from "~/lib/icons/check"
 import type { Nullable } from "~/lib/typeHelpers"
 import { cn } from "~/lib/utils"
 import { AXIOS } from "../../../../axios.config"
 import { OtpInput } from "./otpInput"
-import Input from "~/components/contactPage/input"
 
 const otpResponseZod = z.object({
 	expires: z.string().datetime()
@@ -25,6 +28,7 @@ export default function SignIn() {
 	const [loading, setLoading] = useState(false)
 	const [otp, setOtp] = useState("")
 	const cookies = new Cookies(null, { path: "/" })
+	const [filters, setFilter] = useState<Filter[]>([])
 	useEffect(() => {
 		if (otpExpire === null) {
 			return
@@ -186,8 +190,24 @@ export default function SignIn() {
 						label='نام و نام خانوادگی'
 						placeholder='نام و نام خانوادگی خود را وارد کنید .'
 					/>
-					<Input label='نوع حیوان خانگی' placeholder='نوع حیوان خانگی خود را انتخاب کنید .' />
+					<div className='relative mb-8 w-full'>
+						<Input label='نوع حیوان خانگی' placeholder='' />
+						<div className='absolute left-10 top-4 z-10'>
+							<CFilter
+								type=''
+								currents={filters}
+								onChange={setFilter}
+								title=''
+								options={[["سگ"], ["گربه"]]}
+							/>
+						</div>
+						<div className='absolute top-5 flex w-full justify-center'>
+							<LFilters currents={filters} setCurrenrs={setFilter} />
+						</div>
+					</div>
+
 					<Input label='نام سگ شما' placeholder=' اسم حیوان خانگی خود را وارد کنید .' />
+
 					<Input label='نام گربه شما' placeholder=' اسم حیوان خانگی خود را وارد کنید .' />
 				</div>
 

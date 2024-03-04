@@ -1,15 +1,15 @@
 "use client"
 import { useMutation } from "@tanstack/react-query"
-import Cookies from "universal-cookie"
 import axios from "axios"
 import { useInView } from "framer-motion"
-import { useEffect, useRef, useState, type FC } from "react"
+import { useEffect, useRef, useState } from "react"
+import { toast } from "sonner"
+import Cookies from "universal-cookie"
+import SendComment from "~/lib/icons/sendComment"
+import { ISalesItem } from "../homePage/saleSection"
 import TextComment from "../textComment"
 import { InfoSectionSpecItem } from "./infoSectionSpecItem"
 import { InfoSectionTabLink } from "./infoSectionTabLink"
-import SendComment from "~/lib/icons/sendComment"
-import { ISalesItem } from "../homePage/saleSection"
-import { toast } from "sonner"
 
 export type TComment = {
 	text: string
@@ -151,8 +151,22 @@ export const InfoSection = ({
 							placeholder={"نظر خود را وارد کنید ..."}
 						/>
 					</div>
-					{/* <div className='flex justify-between'>
+					{/* <div className='flex w-full justify-between'>
 						<p className='text-lg text-secondary'>نظرات شما:</p>
+						<button className='border-white-1 flex h-[40px] w-[136px] items-center gap-2'>
+							<p>جدید ترین ها</p>
+							<svg
+								width='15'
+								height='12'
+								viewBox='0 0 15 12'
+								fill='none'
+								xmlns='http://www.w3.org/2000/svg'>
+								<path
+									d='M0 0.5H15V2.33333H0V0.5ZM3.75 5.08333H15V6.91667H3.75V5.08333ZM8.4375 9.66667H15V11.5H8.4375V9.66667Z'
+									fill='#455A64'
+								/>
+							</svg>
+						</button>
 					</div> */}
 				</div>
 			</div>
