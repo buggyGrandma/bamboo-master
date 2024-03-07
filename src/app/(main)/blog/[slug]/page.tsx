@@ -18,6 +18,7 @@ import Cookies from "universal-cookie"
 import { useState } from "react"
 import TextComment from "~/components/textComment"
 import SendComment from "~/lib/icons/sendComment"
+import Star from "~/lib/icons/star"
 
 type BlogPageProps = {
 	params: { slug: string }
@@ -28,6 +29,12 @@ type BlogPageProps = {
 	}
 }
 
+type TRecievedComment = {
+	name: string
+	text: string
+	date: number
+	rate: number
+}
 // export const metadata = {
 // 	title: "علت نفس نفس زدن سگ چیست؟"
 // }
@@ -71,14 +78,13 @@ export default function BlogPage(props: BlogPageProps) {
 		queryFn: fetchBlog
 	})
 	const fetchComments = async () => {
-		const res = await AXIOS.get(`comment/article/${props.params.slug}`)
+		const res = await AXIOS.get<TRecievedComment[]>(`comment/article/${props.params.slug}`)
 		return res.data
 	}
 	const { data: comments } = useQuery({
 		queryKey: ["blogComments"],
 		queryFn: fetchComments
 	})
-	console.log(comments)
 	const handleSubmitComment = async () => {
 		const result = addComment.mutate({
 			text,
@@ -87,8 +93,6 @@ export default function BlogPage(props: BlogPageProps) {
 			type: "article",
 			account: cookies.get("account")
 		})
-
-		console.log("Result data:", result)
 	}
 	return (
 		<div className='bg-white pb-28 lg:bg-fa'>
@@ -145,8 +149,10 @@ export default function BlogPage(props: BlogPageProps) {
 									{blog?.title}
 								</h2>
 								<div className='flex gap-2'>
-									{blog?.tag.map((item) => (
-										<div className='rounded-full border border-primary px-6 py-2 text-xs text-primary'>
+									{blog?.tag.map((item, i) => (
+										<div
+											key={i}
+											className='rounded-full border border-primary px-6 py-2 text-xs text-primary'>
 											{item}
 										</div>
 									))}
@@ -168,9 +174,11 @@ export default function BlogPage(props: BlogPageProps) {
 							برچسب ها:
 						</h3>
 						<ul className='mt-6 flex flex-wrap gap-2'>
-							{blog?.tag.map((item, i) => <SearchTag text={item} selected={i === 0} />)}
+							{blog?.tag.map((item, i) => (
+								<SearchTag key={i} text={item} selected={i === 0} />
+							))}
 						</ul>
-						<div className='relative'>
+						<div className='relativec mt-8'>
 							<button
 								className='absolute left-4 top-5 z-10 flex items-center justify-center gap-2 rounded-md border-2 border-primary bg-white px-12 py-2 text-primary'
 								onClick={handleSubmitComment}>
@@ -183,10 +191,39 @@ export default function BlogPage(props: BlogPageProps) {
 								label={""}
 								placeholder={"نظر خود را وارد کنید ..."}
 							/>
+							<div className='mt-8 flex flex-col gap-5 text-base font-normal text-stone-600'>
+								<p className='font-bold '>دیدگاه های شما :</p>
+								{comments &&
+									comments.map((comment, i) => (
+										<div key={i} className='flex justify-between '>
+											<div className='flex w-full gap-2'>
+												<div className='h-[40px] w-[40px] rounded-full bg-stone-700' />
+												<div className='flex w-full flex-col'>
+													<p>{comment.name}</p>
+													<p className='text-xs text-stone-400 '>
+														{moment(comment.date, "YYYY/MM/DD").format("YYYY/M/DD")}
+													</p>
+													<p className='mt-3  text-xs'>{comment.text}</p>
+												</div>
+											</div>
+											<div className='w-fit'>
+												<div className='flex gap-1 text-xs'>
+													{new Array(5).fill(0).map((_, i) => (
+														<Star
+															key={i}
+															className={`${i >= comment.rate ? "text-gray-400" : "text-yellow-400"} `}
+														/>
+													))}
+												</div>
+												<p className='mt-3 text-xs'>امتیازدهی {comment.rate} از 5 </p>
+											</div>
+										</div>
+									))}
+							</div>
 						</div>
 					</section>
-					<div className='hidden lg:block'>
-						<section className='w-[425px] max-w-[30vw] rounded-2xl bg-white lg:border lg:border-secondary-50 lg:px-8 lg:py-12'>
+					<section className='hidden lg:block'>
+						<div className='w-[425px] max-w-[30vw] rounded-2xl bg-white lg:border lg:border-secondary-50 lg:px-8 lg:py-12'>
 							<h3 className='text-sm text-secondary-500'>جستجو در وبلاگ</h3>
 							<SearchInput
 								className='ms-0 mt-6 max-w-none'
@@ -194,10 +231,12 @@ export default function BlogPage(props: BlogPageProps) {
 							/>
 							<h3 className='mt-8 text-sm text-secondary-500'>برچسب‌های وبلاگ</h3>
 							<ul className='mt-6 flex flex-wrap gap-x-2 gap-y-4'>
-								{blog?.tag.map((item, i) => <SearchTag text={item} selected={i === 0} />)}
+								{blog?.tag.map((item, i) => (
+									<SearchTag key={i} text={item} selected={i === 0} />
+								))}
 							</ul>
-						</section>
-					</div>
+						</div>
+					</section>
 				</div>
 			</div>
 		</div>
