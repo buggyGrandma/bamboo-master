@@ -11,6 +11,7 @@ import { e2p } from "~/lib/digitConverter"
 import moment from "jalali-moment"
 
 export type TBlog = {
+	_id: number
 	title: string
 	text: string
 	summery: string
@@ -131,7 +132,7 @@ export default function BlogsPage(props: BlogPageProps) {
 										<p className='text-sm text-secondary'>
 											{blog.summery}
 											<Link
-												href={`/blog/${blog.title}`}
+												href={`/blog/${blog._id}`}
 												className='ms-1 hidden font-semibold text-primary underline underline-offset-4 md:inline-block lg:hidden xl:inline-block'>
 												ادامه مطالب
 											</Link>
