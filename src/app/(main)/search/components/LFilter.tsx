@@ -46,8 +46,8 @@ const LFilters = ({ currents, setCurrenrs }: Props) => {
 					<path
 						d='M7.5 7.5L12 12M12 12L7.5 16.5M12 12L16.5 16.5M12 12L16.5 7.5'
 						stroke='#78909C'
-						stroke-linecap='round'
-						stroke-linejoin='round'
+						strokeLinecap='round'
+						strokeLinejoin='round'
 					/>
 				</svg>
 			</button>

@@ -17,6 +17,7 @@ import type { Nullable } from "~/lib/typeHelpers"
 import { cn } from "~/lib/utils"
 import { AXIOS } from "../../../../axios.config"
 import { OtpInput } from "./otpInput"
+import { useRouter } from "next/navigation"
 
 const otpResponseZod = z.object({
 	expires: z.string().datetime()
@@ -28,32 +29,36 @@ export default function SignIn() {
 	const [otpExpire, setOtpExpire] = useState<Nullable<Date>>(null)
 	const [isAuth, setAuth] = useState(false)
 	const [loading, setLoading] = useState(false)
+	const [userName, setUserName] = useState("")
+	const [petName, setPetName] = useState("")
 	const [otp, setOtp] = useState("")
 	const cookies = new Cookies(null, { path: "/" })
 	const [filters, setFilter] = useState<Filter[]>([])
-
-	interface IPetType {
+	const router = useRouter()
+	type PetType = {
 		petType: string
 	}
 	type TAccounting = {
 		petType: string
 		petBirthday: string
+		userName: string
 		petName: string
 		account: string
 	}
 	const fetchPetType = () =>
-		AXIOS.get<IPetType>(`accounting/petTypes`).then((res) => {
+		AXIOS.get<PetType[]>(`accounting/petTypes`).then((res) => {
 			console.log(res.data)
 			return res.data
 		})
-	const { data } = useQuery({
+	const { data: petTypes } = useQuery({
 		queryKey: ["petTypes"],
 		queryFn: fetchPetType
 	})
+	console.log(petName)
 
 	const addPet = useMutation({
 		mutationFn: async (pt: TAccounting) => {
-			const { account, petBirthday, petName, petType } = pt
+			const { account, petBirthday, petName, userName, petType } = pt
 			const config = {
 				headers: {
 					token: cookies.get("token")
@@ -62,6 +67,7 @@ export default function SignIn() {
 			const requestBody = {
 				account,
 				petBirthday,
+				userName,
 				petName,
 				petType
 			}
@@ -70,16 +76,17 @@ export default function SignIn() {
 				requestBody,
 				config
 			)
-			toast.success(res.data)
-
+			res.data === "ok" ? (router.push("/"), toast.success(res.data)) : toast.error(res.data)
 			return res.data
 		}
 	})
-	const handleSubmitPet = async () => {
+	const handleSubmitPet: FormEventHandler<HTMLFormElement> = async (e) => {
+		e.preventDefault()
 		const result = addPet.mutate({
 			petBirthday: "1200",
-			petName: "مسی",
-			petType: "سگ",
+			petName,
+			petType: filters[0]?.name ? filters[0].name : "",
+			userName,
 			account: cookies.get("account")
 		})
 
@@ -236,39 +243,50 @@ export default function SignIn() {
 	}
 	if (isAuth) {
 		return (
-			<form>
+			<form onSubmit={handleSubmitPet}>
 				<div className='flex w-full items-center justify-center md:justify-between'>
 					<h1 className='text-base font-extrabold text-secondary'>اطلاعات خود را وارد کنید</h1>
 					<div className='hidden md:block'>بامبو</div>
 				</div>
-				<div className='mt-8 flex flex-col items-start gap-4 md:mt-6'>
+				<div className='mt-8 flex flex-col items-start gap-12 md:mt-6'>
 					<Input
+						OnChange={setUserName}
 						label='نام و نام خانوادگی'
 						placeholder='نام و نام خانوادگی خود را وارد کنید .'
 					/>
 					<div className='relative mb-8 w-full'>
 						<Input label='نوع حیوان خانگی' placeholder='' />
 						<div className='absolute left-10 top-4 z-10'>
-							<CFilter
-								type=''
-								currents={filters}
-								onChange={setFilter}
-								title=''
-								options={[
-									[`${data[0]?.petType}`],
-									[`${data[1]?.petType}`],
-									[`${data[2]?.petType}`]
-								]}
-							/>
+							{petTypes && (
+								<CFilter
+									type=''
+									currents={filters}
+									onChange={setFilter}
+									title=''
+									options={
+										// 	[
+										// 	[types[0]?.petType}`],
+										// 	[`${data[1]?.petType}`],
+										// 	[`${data[2]?.petType}`]
+										// ]
+										petTypes.map((item) => [item.petType])
+									}
+								/>
+							)}
 						</div>
 						<div className='absolute top-5 flex w-full justify-center'>
 							<LFilters currents={filters} setCurrenrs={setFilter} />
 						</div>
 					</div>
-
-					<Input label='نام سگ شما' placeholder=' اسم حیوان خانگی خود را وارد کنید .' />
-
-					<Input label='نام گربه شما' placeholder=' اسم حیوان خانگی خود را وارد کنید .' />
+					{filters &&
+						filters.map((filter) => (
+							<Input
+								OnChange={setPetName}
+								key={filter.name}
+								label={`نام ${filter.name} شما`}
+								placeholder=' اسم حیوان خانگی خود را وارد کنید .'
+							/>
+						))}
 				</div>
 
 				<button
@@ -293,7 +311,6 @@ export default function SignIn() {
 				{remainingTime} ثانیه مانده تا دریافت مجدد کد
 			</div>
 			<button
-				onClick={handleSubmitPet}
 				type='submit'
 				className='mt-4 flex h-12 w-full items-center justify-center rounded-lg bg-primary text-sm font-bold text-fa transition-[filter] disabled:grayscale md:mt-6'
 				disabled={loading || otp.length < 4}
