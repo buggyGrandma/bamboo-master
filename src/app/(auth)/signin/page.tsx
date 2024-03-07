@@ -54,7 +54,6 @@ export default function SignIn() {
 		queryKey: ["petTypes"],
 		queryFn: fetchPetType
 	})
-	console.log(petName)
 
 	const addPet = useMutation({
 		mutationFn: async (pt: TAccounting) => {
@@ -89,8 +88,6 @@ export default function SignIn() {
 			userName,
 			account: cookies.get("account")
 		})
-
-		console.log("Result data:", result)
 	}
 	useEffect(() => {
 		if (otpExpire === null) {
@@ -121,8 +118,6 @@ export default function SignIn() {
 			const response = await AXIOS.post("authentication/sendOTP", {
 				account: formData.get("username")
 			}).then((res) => res.data)
-
-			console.log(response)
 
 			if (response.status !== "ok") {
 				setLoading(false)

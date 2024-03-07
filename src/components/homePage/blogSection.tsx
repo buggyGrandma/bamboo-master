@@ -9,7 +9,6 @@ import { useQuery } from "@tanstack/react-query"
 const BlogSection = () => {
 	const fetchBlogs = () =>
 		AXIOS.get<TBlogPost[]>("blog/marked/blogs").then((res) => {
-			console.log(res.data)
 			return res.data
 		})
 	const { data: blogs } = useQuery({
@@ -25,6 +24,7 @@ const BlogSection = () => {
 				<Carousel
 					input={blogs.map((blog) => (
 						<BlogPost
+							_id={blog._id}
 							image={blog.image}
 							summery={blog.summery}
 							title={blog.title}

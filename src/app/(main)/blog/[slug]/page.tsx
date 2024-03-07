@@ -70,12 +70,21 @@ export default function BlogPage(props: BlogPageProps) {
 		queryKey: ["blog"],
 		queryFn: fetchBlog
 	})
+	const fetchComments = async () => {
+		const res = await AXIOS.get(`comment/article/${props.params.slug}`)
+		return res.data
+	}
+	const { data: comments } = useQuery({
+		queryKey: ["blogComments"],
+		queryFn: fetchComments
+	})
+	console.log(comments)
 	const handleSubmitComment = async () => {
 		const result = addComment.mutate({
 			text,
-			id: 1, //_id
+			id: parseInt(props.params.slug),
 			rate,
-			type: "product",
+			type: "article",
 			account: cookies.get("account")
 		})
 
