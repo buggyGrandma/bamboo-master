@@ -1,5 +1,5 @@
 "use client"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { useInView } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
@@ -10,6 +10,10 @@ import { ISalesItem } from "../homePage/saleSection"
 import TextComment from "../textComment"
 import { InfoSectionSpecItem } from "./infoSectionSpecItem"
 import { InfoSectionTabLink } from "./infoSectionTabLink"
+import { TRecievedComment } from "~/app/(main)/blog/[slug]/page"
+import { AXIOS } from "../../../axios.config"
+import Star from "~/lib/icons/star"
+import moment from "jalali-moment"
 
 export type TComment = {
 	text: string
@@ -39,6 +43,14 @@ export const InfoSection = ({
 	const [text, setText] = useState("")
 	const [rate, setRate] = useState(1)
 	const cookies = new Cookies(null, { path: "/" })
+	const fetchComments = async () => {
+		const res = await AXIOS.get<TRecievedComment[]>(`comment/product/${_id}`)
+		return res.data
+	}
+	const { data: comments } = useQuery({
+		queryKey: ["blogComments"],
+		queryFn: fetchComments
+	})
 	const addComment = useMutation({
 		mutationFn: async (cmt: TComment) => {
 			const { account, text, rate, type, id } = cmt
@@ -151,23 +163,35 @@ export const InfoSection = ({
 							placeholder={"نظر خود را وارد کنید ..."}
 						/>
 					</div>
-					{/* <div className='flex w-full justify-between'>
-						<p className='text-lg text-secondary'>نظرات شما:</p>
-						<button className='border-white-1 flex h-[40px] w-[136px] items-center gap-2'>
-							<p>جدید ترین ها</p>
-							<svg
-								width='15'
-								height='12'
-								viewBox='0 0 15 12'
-								fill='none'
-								xmlns='http://www.w3.org/2000/svg'>
-								<path
-									d='M0 0.5H15V2.33333H0V0.5ZM3.75 5.08333H15V6.91667H3.75V5.08333ZM8.4375 9.66667H15V11.5H8.4375V9.66667Z'
-									fill='#455A64'
-								/>
-							</svg>
-						</button>
-					</div> */}
+					<div className='mt-8 flex flex-col gap-5 text-base font-normal text-stone-600'>
+						<p className='mb-5 font-bold'>دیدگاه های شما :</p>
+						{comments &&
+							comments.map((comment, i) => (
+								<div key={i} className='flex justify-between '>
+									<div className='flex w-full gap-2'>
+										<div className='h-[40px] w-[40px] rounded-full bg-stone-700' />
+										<div className='flex w-full flex-col'>
+											<p>{comment.name}</p>
+											<p className='text-xs text-stone-400 '>
+												{moment(comment.date, "YYYY/MM/DD").format("YYYY/M/DD")}
+											</p>
+											<p className='mt-3  text-xs'>{comment.text}</p>
+										</div>
+									</div>
+									<div className='w-fit'>
+										<div className='flex gap-1 text-xs'>
+											{new Array(5).fill(0).map((_, i) => (
+												<Star
+													key={i}
+													className={`${i >= comment.rate ? "text-gray-400" : "text-yellow-400"} `}
+												/>
+											))}
+										</div>
+										<p className='mt-3 text-xs'>امتیازدهی {comment.rate} از 5 </p>
+									</div>
+								</div>
+							))}
+					</div>
 				</div>
 			</div>
 		</div>
