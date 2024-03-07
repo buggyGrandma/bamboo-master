@@ -178,7 +178,7 @@ export default function BlogPage(props: BlogPageProps) {
 								<SearchTag key={i} text={item} selected={i === 0} />
 							))}
 						</ul>
-						<div className='relativec mt-8'>
+						<div className='relative mt-8'>
 							<button
 								className='absolute left-4 top-5 z-10 flex items-center justify-center gap-2 rounded-md border-2 border-primary bg-white px-12 py-2 text-primary'
 								onClick={handleSubmitComment}>
