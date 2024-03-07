@@ -1,5 +1,7 @@
 "use client"
 import { Switch } from "@headlessui/react"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import axios from "axios"
 import Link from "next/link"
 import type { ChangeEventHandler, FormEventHandler } from "react"
 import { useCallback, useEffect, useState } from "react"
@@ -29,6 +31,60 @@ export default function SignIn() {
 	const [otp, setOtp] = useState("")
 	const cookies = new Cookies(null, { path: "/" })
 	const [filters, setFilter] = useState<Filter[]>([])
+
+	interface IPetType {
+		petType: string
+	}
+	type TAccounting = {
+		petType: string
+		petBirthday: string
+		petName: string
+		account: string
+	}
+	const fetchPetType = () =>
+		AXIOS.get<IPetType>(`accounting/petTypes`).then((res) => {
+			console.log(res.data)
+			return res.data
+		})
+	const { data } = useQuery({
+		queryKey: ["petTypes"],
+		queryFn: fetchPetType
+	})
+
+	const addPet = useMutation({
+		mutationFn: async (pt: TAccounting) => {
+			const { account, petBirthday, petName, petType } = pt
+			const config = {
+				headers: {
+					token: cookies.get("token")
+				}
+			}
+			const requestBody = {
+				account,
+				petBirthday,
+				petName,
+				petType
+			}
+			const res = await axios.post(
+				"http://185.19.201.5:1000/accounting/signup",
+				requestBody,
+				config
+			)
+			toast.success(res.data)
+
+			return res.data
+		}
+	})
+	const handleSubmitPet = async () => {
+		const result = addPet.mutate({
+			petBirthday: "1200",
+			petName: "مسی",
+			petType: "سگ",
+			account: cookies.get("account")
+		})
+
+		console.log("Result data:", result)
+	}
 	useEffect(() => {
 		if (otpExpire === null) {
 			return
@@ -198,7 +254,11 @@ export default function SignIn() {
 								currents={filters}
 								onChange={setFilter}
 								title=''
-								options={[["سگ"], ["گربه"]]}
+								options={[
+									[`${data[0]?.petType}`],
+									[`${data[1]?.petType}`],
+									[`${data[2]?.petType}`]
+								]}
 							/>
 						</div>
 						<div className='absolute top-5 flex w-full justify-center'>
@@ -233,6 +293,7 @@ export default function SignIn() {
 				{remainingTime} ثانیه مانده تا دریافت مجدد کد
 			</div>
 			<button
+				onClick={handleSubmitPet}
 				type='submit'
 				className='mt-4 flex h-12 w-full items-center justify-center rounded-lg bg-primary text-sm font-bold text-fa transition-[filter] disabled:grayscale md:mt-6'
 				disabled={loading || otp.length < 4}
