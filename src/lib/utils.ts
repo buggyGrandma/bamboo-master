@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { env } from "~/env.mjs"
+// import { env } from "~/env.mjs"
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
@@ -83,9 +83,9 @@ export function isArrayOfFile(files: unknown): files is File[] {
 	return files.every((file) => file instanceof File)
 }
 
-export function absoluteUrl(path: string) {
-	return `${env.NEXTAUTH_URL}${path}`
-}
+// export function absoluteUrl(path: string) {
+// 	return `${env.NEXTAUTH_URL}${path}`
+// }
 
 export function isMacOs() {
 	if (typeof window === "undefined") return false
