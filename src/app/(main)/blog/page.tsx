@@ -74,6 +74,7 @@ export default function BlogsPage(props: BlogPageProps) {
 							)}>
 							{blogs?.slice(0, 3).map((blog) => (
 								<li
+									key={blog._id}
 									className={cn(
 										"flex flex-col gap-4",
 										"md:flex-row md:gap-8",
@@ -124,7 +125,9 @@ export default function BlogsPage(props: BlogPageProps) {
 										</h3>
 										<div className='flex flex-wrap gap-1'>
 											{blog.tag.map((item) => (
-												<div className='hidden self-start rounded-full border border-primary px-6 py-2 text-xs text-primary md:block lg:hidden xl:block'>
+												<div
+													key={blog._id}
+													className='hidden self-start rounded-full border border-primary px-6 py-2 text-xs text-primary md:block lg:hidden xl:block'>
 													{item}
 												</div>
 											))}
@@ -164,7 +167,7 @@ export default function BlogsPage(props: BlogPageProps) {
 							{blogs && (
 								<ul className='mt-6 flex flex-wrap gap-x-2 gap-y-4'>
 									{blogs[0]?.tag.map((item, i) => (
-										<SearchTag text={item} selected={i === 0} />
+										<SearchTag key={i} text={item} selected={i === 0} />
 									))}
 								</ul>
 							)}
@@ -173,11 +176,12 @@ export default function BlogsPage(props: BlogPageProps) {
 							<h3 className='text-sm text-secondary-500'>
 								محبوب ترین در <span className='text-primary'>وبلاگ</span>
 							</h3>
+
 							<div className='rounded-2xl bg-white lg:w-[425px] lg:border lg:border-secondary-50 lg:px-8 lg:py-12'>
 								<ul className='mt-6 flex flex-col flex-wrap gap-x-2 gap-y-4'>
 									{blogs &&
 										blogs.slice(0, 4).map((blog) => (
-											<li className='flex '>
+											<li key={blog._id} className='flex '>
 												<img
 													src={`${AXIOS.defaults.baseURL}file/${blog?.image}`}
 													alt=''

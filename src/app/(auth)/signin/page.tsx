@@ -44,6 +44,11 @@ export default function SignIn() {
 		petName: string
 		account: string
 	}
+	interface ConfigType {
+		headers: {
+			token: string
+		}
+	}
 	const fetchPetType = () =>
 		AXIOS.get<PetType[]>(`accounting/petTypes`).then((res) => {
 			console.log(res.data)
@@ -57,9 +62,9 @@ export default function SignIn() {
 	const addPet = useMutation({
 		mutationFn: async (pt: TAccounting) => {
 			const { account, petBirthday, petName, userName, petType } = pt
-			const config = {
+			const config: ConfigType = {
 				headers: {
-					token: cookies.get("token")
+					token: cookies.get("token") as string
 				}
 			}
 			const requestBody = {
@@ -70,11 +75,31 @@ export default function SignIn() {
 				petType
 			}
 
+			// const res = await AXIOS.post("accounting/signup", requestBody, config)
+			// res.data === "ok" ? (router.push("/"), toast.success(res.data)) : toast.error(res.data)
+			// return res.data
 			const res = await AXIOS.post("accounting/signup", requestBody, config)
-			res.data === "ok" ? (router.push("/"), toast.success(res.data)) : toast.error(res.data)
-			return res.data
+			if (typeof res.data === "string") {
+				if (res.data === "ok") {
+					router.push("/")
+					toast.success(res.data)
+				} else {
+					toast.error(res.data)
+				}
+			}
+			return res.data as string
 		}
 	})
+	// const handleSubmitPet: FormEventHandler<HTMLFormElement> = async (e) => {
+	// 	e.preventDefault()
+	// 	const result = addPet.mutate({
+	// 		petBirthday: "1200",
+	// 		petName,
+	// 		petType: filters[0]?.name ? filters[0].name : "",
+	// 		userName,
+	// 		account: cookies.get("account") as string
+	// 	})
+	// }
 	const handleSubmitPet: FormEventHandler<HTMLFormElement> = async (e) => {
 		e.preventDefault()
 		const result = addPet.mutate({
@@ -82,9 +107,10 @@ export default function SignIn() {
 			petName,
 			petType: filters[0]?.name ? filters[0].name : "",
 			userName,
-			account: cookies.get("account")
+			account: cookies.get("account") as string
 		})
 	}
+
 	useEffect(() => {
 		if (otpExpire === null) {
 			return
