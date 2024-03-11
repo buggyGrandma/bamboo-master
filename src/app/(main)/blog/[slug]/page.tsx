@@ -1,25 +1,20 @@
 "use client"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import Image from "next/image"
 import moment from "jalali-moment"
 import Link from "next/link"
-import Markdown from "react-markdown"
+import { useState } from "react"
+import { toast } from "sonner"
+import Cookies from "universal-cookie"
+import Blog from "~/components/blogPage/blog"
 import { SearchTag } from "~/components/blogPage/searchTag"
 import { PhoneHeader } from "~/components/phoneHeader"
-import { SearchInput } from "~/components/searchInput"
-import { cn } from "~/lib/utils"
-import { AXIOS } from "../../../../../axios.config"
-import { TBlog } from "../page"
-import { e2p, p2e } from "~/lib/digitConverter"
-import axios from "axios"
-import { toast } from "sonner"
 import { TComment } from "~/components/productPage/infoSection"
-import Cookies from "universal-cookie"
-import { useState } from "react"
+import { SearchInput } from "~/components/searchInput"
 import TextComment from "~/components/textComment"
 import SendComment from "~/lib/icons/sendComment"
 import Star from "~/lib/icons/star"
-import Blog from "~/components/blogPage/blog"
+import { AXIOS } from "../../../../../axios.config"
+import { TBlog } from "../page"
 
 type BlogPageProps = {
 	params: { slug: string }
@@ -56,11 +51,7 @@ export default function BlogPage(props: BlogPageProps) {
 				type,
 				id
 			}
-			const res = await axios.post(
-				"http://185.19.201.5:1000/comment/commenting",
-				requestBody,
-				config
-			)
+			const res = await AXIOS.post("comment/commenting", requestBody, config)
 			toast.success(res.data)
 			setText("")
 			setRate(1)

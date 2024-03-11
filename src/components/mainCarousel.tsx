@@ -1,10 +1,10 @@
 "use client"
+import { useQuery } from "@tanstack/react-query"
 import useEmblaCarousel from "embla-carousel-react"
 import { useCallback, useEffect, useState } from "react"
 import { flushSync } from "react-dom"
 import { cn } from "~/lib/utils"
 import { AXIOS } from "../../axios.config"
-import { useQuery } from "@tanstack/react-query"
 
 interface Input {
 	action: string
@@ -74,7 +74,7 @@ export default function MainCarousel() {
 				{inputs?.map((item, i) => (
 					<div key={i} className='min-w-0 flex-shrink-0 flex-grow-0 basis-[90%] lg:basis-full'>
 						<img
-							src={`http://185.19.201.5:1000/file/${item.filePath}`}
+							src={`${AXIOS.defaults.baseURL}file/${item.filePath}`}
 							alt='slide'
 							className='rounded-2xl lg:!scale-100 lg:rounded-none'
 							style={{

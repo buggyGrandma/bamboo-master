@@ -22,8 +22,8 @@ const CategorySection = () => {
 						return (
 							<div key={category.title} className='flex flex-col items-center gap-5 '>
 								<img
-									className=' h-[200px] w-[200px] justify-items-center rounded-full '
-									src={`http://185.19.201.5:1000/file/${category.subcategoryIcon ? category.subcategoryIcon : category.icon}`}
+									className='h-[200px] w-[200px] justify-items-center rounded-full'
+									src={`${AXIOS.defaults.baseURL}file/${category.subcategoryIcon ? category.subcategoryIcon : category.icon}`}
 									alt={category.title}
 								/>
 

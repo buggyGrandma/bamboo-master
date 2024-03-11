@@ -48,9 +48,10 @@ export const DesktopHeaderCategory: React.FC = () => {
 									<img
 										width={30}
 										height={30}
-										src={`http://185.19.201.5:1000/file/${item.animalIcon}`}
+										src={`${AXIOS.defaults.baseURL}file/${item.animalIcon}`}
 										alt={item.animal}
 									/>
+
 									{item.animal}
 								</Tab>
 							))}

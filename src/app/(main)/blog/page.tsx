@@ -1,14 +1,13 @@
 "use client"
 import { useQuery } from "@tanstack/react-query"
-import Image from "next/image"
+import moment from "jalali-moment"
 import Link from "next/link"
 import { SearchTag } from "~/components/blogPage/searchTag"
 import { PhoneHeader } from "~/components/phoneHeader"
 import { SearchInput } from "~/components/searchInput"
+import { e2p } from "~/lib/digitConverter"
 import { cn } from "~/lib/utils"
 import { AXIOS } from "../../../../axios.config"
-import { e2p } from "~/lib/digitConverter"
-import moment from "jalali-moment"
 
 export type TBlog = {
 	_id: number
@@ -82,7 +81,7 @@ export default function BlogsPage(props: BlogPageProps) {
 										"xl:flex-row xl:gap-8"
 									)}>
 									<img
-										src={`http://185.19.201.5:1000/file/${blog?.image}`}
+										src={`${AXIOS.defaults.baseURL}file/${blog?.image}`}
 										alt=''
 										height={256}
 										width={400}
@@ -93,10 +92,11 @@ export default function BlogsPage(props: BlogPageProps) {
 											"xl:h-64 xl:w-64"
 										)}
 									/>
+
 									<div className='flex flex-col gap-[18px]'>
 										<div className='flex items-center text-xs text-secondary xl:text-sm'>
 											<img
-												src={`http://185.19.201.5:1000/file/${blog?.writer.image}`}
+												src={`${AXIOS.defaults.baseURL}file/${blog?.writer.image}`}
 												alt=''
 												height={40}
 												width={40}
@@ -107,6 +107,7 @@ export default function BlogsPage(props: BlogPageProps) {
 													"xl:h-10 xl:w-10"
 												)}
 											/>
+
 											<div className='ms-2 xl:ms-4'>{blog.writer.name}</div>
 											<div className='ms-auto'>
 												<span dir='ltr'>
@@ -178,12 +179,13 @@ export default function BlogsPage(props: BlogPageProps) {
 										blogs.slice(0, 4).map((blog) => (
 											<li className='flex '>
 												<img
-													src={`http://185.19.201.5:1000/file/${blog?.image}`}
+													src={`${AXIOS.defaults.baseURL}file/${blog?.image}`}
 													alt=''
 													height={50}
 													width={50}
 													className={cn()}
 												/>
+
 												<div>
 													<h3 className='text-xs text-secondary xl:text-sm'>
 														{blog.title}

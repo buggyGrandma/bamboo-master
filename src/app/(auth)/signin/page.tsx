@@ -1,8 +1,8 @@
 "use client"
 import { Switch } from "@headlessui/react"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import axios from "axios"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import type { ChangeEventHandler, FormEventHandler } from "react"
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
@@ -17,7 +17,6 @@ import type { Nullable } from "~/lib/typeHelpers"
 import { cn } from "~/lib/utils"
 import { AXIOS } from "../../../../axios.config"
 import { OtpInput } from "./otpInput"
-import { useRouter } from "next/navigation"
 
 const otpResponseZod = z.object({
 	expires: z.string().datetime()
@@ -70,11 +69,8 @@ export default function SignIn() {
 				petName,
 				petType
 			}
-			const res = await axios.post(
-				"http://185.19.201.5:1000/accounting/signup",
-				requestBody,
-				config
-			)
+
+			const res = await AXIOS.post("accounting/signup", requestBody, config)
 			res.data === "ok" ? (router.push("/"), toast.success(res.data)) : toast.error(res.data)
 			return res.data
 		}

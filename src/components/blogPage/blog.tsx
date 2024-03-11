@@ -1,8 +1,9 @@
 import moment from "jalali-moment"
-import React, { FC } from "react"
+import { FC } from "react"
 import Markdown from "react-markdown"
 import { e2p } from "~/lib/digitConverter"
 import { cn } from "~/lib/utils"
+import { AXIOS } from "../../../axios.config"
 import { SearchTag } from "./searchTag"
 
 type Props = {
@@ -18,21 +19,23 @@ const Blog: FC<Props> = ({ date, image, tags, text, title, writer }) => {
 	return (
 		<>
 			<img
-				src={`http://185.19.201.5:1000/file/${image}`}
+				src={`${AXIOS.defaults.baseURL}file/${image}`}
 				alt=''
 				height={800}
 				width={500}
 				className='h-auto w-full rounded-2xl object-cover'
 			/>
+
 			<div className='mt-6 flex flex-col gap-4 md:flex-col-reverse lg:flex-col xl:flex-col-reverse'>
 				<div className='flex items-center text-xs font-medium text-secondary md:text-sm lg:text-xs xl:text-sm'>
 					<img
-						src={`http://185.19.201.5:1000/file/${writer.image}`}
+						src={`${AXIOS.defaults.baseURL}file/${writer.image}`}
 						alt=''
 						height={40}
 						width={40}
 						className='h-8 w-8 rounded-full object-cover md:h-10 md:w-10 lg:h-8 lg:w-8 xl:h-10 xl:w-10'
 					/>
+
 					<div className='ms-2 xl:ms-4'>{writer.name}</div>
 					<div className='ms-auto'>
 						<span dir='ltr'>

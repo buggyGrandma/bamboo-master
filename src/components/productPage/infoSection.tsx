@@ -1,19 +1,18 @@
 "use client"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import axios from "axios"
 import { useInView } from "framer-motion"
+import moment from "jalali-moment"
 import { useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import Cookies from "universal-cookie"
+import { TRecievedComment } from "~/app/(main)/blog/[slug]/page"
 import SendComment from "~/lib/icons/sendComment"
+import Star from "~/lib/icons/star"
+import { AXIOS } from "../../../axios.config"
 import { ISalesItem } from "../homePage/saleSection"
 import TextComment from "../textComment"
 import { InfoSectionSpecItem } from "./infoSectionSpecItem"
 import { InfoSectionTabLink } from "./infoSectionTabLink"
-import { TRecievedComment } from "~/app/(main)/blog/[slug]/page"
-import { AXIOS } from "../../../axios.config"
-import Star from "~/lib/icons/star"
-import moment from "jalali-moment"
 
 export type TComment = {
 	text: string
@@ -66,11 +65,7 @@ export const InfoSection = ({
 				type,
 				id
 			}
-			const res = await axios.post(
-				"http://185.19.201.5:1000/comment/commenting",
-				requestBody,
-				config
-			)
+			const res = await AXIOS.post("comment/commenting", requestBody, config)
 			toast.success(res.data)
 			setText("")
 			setRate(1)
