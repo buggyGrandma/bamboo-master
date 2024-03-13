@@ -1,4 +1,4 @@
-import useEmblaCarousel from "embla-carousel-react"
+import useEmblaCarousel, { EmblaCarouselType } from "embla-carousel-react"
 import { ReactNode, useCallback, useEffect, useState } from "react"
 import Arrow from "~/lib/icons/arrow"
 import "./carouselCSS.css"
@@ -11,7 +11,7 @@ const Carousel = ({ input }: { input: ReactNode[] }) => {
 		watchResize: true
 	})
 	const [selected, setSelected] = useState(1)
-	const logSlidesInView = useCallback((emblaApi: any) => {
+	const logSlidesInView = useCallback((emblaApi: EmblaCarouselType) => {
 		setSelected(emblaApi.selectedScrollSnap())
 	}, [])
 	useEffect(() => {

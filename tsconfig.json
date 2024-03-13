@@ -16,6 +16,7 @@
 		"checkJs": true,
 		"forceConsistentCasingInFileNames": true,
 		"noUncheckedIndexedAccess": true,
+		"strictNullChecks": true,
 		"plugins": [
 			{
 				"name": "next"

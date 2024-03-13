@@ -31,6 +31,11 @@ export type TRecievedComment = {
 	date: number
 	rate: number
 }
+interface ConfigType {
+	headers: {
+		token: string
+	}
+}
 
 export default function BlogPage(props: BlogPageProps) {
 	const cookies = new Cookies(null, { path: "/" })
@@ -39,9 +44,9 @@ export default function BlogPage(props: BlogPageProps) {
 	const addComment = useMutation({
 		mutationFn: async (cmt: TComment) => {
 			const { account, text, rate, type, id } = cmt
-			const config = {
+			const config: ConfigType = {
 				headers: {
-					token: cookies.get("token")
+					token: cookies.get("token") as string
 				}
 			}
 			const requestBody = {
@@ -52,10 +57,10 @@ export default function BlogPage(props: BlogPageProps) {
 				id
 			}
 			const res = await AXIOS.post("comment/commenting", requestBody, config)
-			toast.success(res.data)
+			toast.success(res.data as string)
 			setText("")
 			setRate(1)
-			return res.data
+			return res.data as string
 		}
 	})
 	const fetchBlog = async () => {
@@ -80,7 +85,7 @@ export default function BlogPage(props: BlogPageProps) {
 			id: parseInt(props.params.slug),
 			rate,
 			type: "article",
-			account: cookies.get("account")
+			account: cookies.get("account") as string
 		})
 	}
 	return (

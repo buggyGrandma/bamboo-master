@@ -21,6 +21,11 @@ export type TComment = {
 	type: string
 	account: string
 }
+interface ConfigType {
+	headers: {
+		token: string
+	}
+}
 
 export const InfoSection = ({
 	_id,
@@ -53,9 +58,9 @@ export const InfoSection = ({
 	const addComment = useMutation({
 		mutationFn: async (cmt: TComment) => {
 			const { account, text, rate, type, id } = cmt
-			const config = {
+			const config: ConfigType = {
 				headers: {
-					token: cookies.get("token")
+					token: cookies.get("token") as string
 				}
 			}
 			const requestBody = {
@@ -66,10 +71,10 @@ export const InfoSection = ({
 				id
 			}
 			const res = await AXIOS.post("comment/commenting", requestBody, config)
-			toast.success(res.data)
+			toast.success(res.data as string)
 			setText("")
 			setRate(1)
-			return res.data
+			return res.data as string
 		}
 	})
 
@@ -94,7 +99,7 @@ export const InfoSection = ({
 			id: _id,
 			rate,
 			type: "product",
-			account: cookies.get("account")
+			account: cookies.get("account") as string
 		})
 
 		console.log("Result data:", result)

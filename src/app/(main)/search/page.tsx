@@ -4,12 +4,12 @@ import { useEffect, useState } from "react"
 import { PhoneHeader } from "~/components/phoneHeader"
 import { SearchInput } from "~/components/searchInput"
 import { cn } from "~/lib/utils"
+import { AXIOS } from "../../../../axios.config"
 import CFilter from "./components/CFilter"
 import ListItem, { TListItem } from "./components/ListItem"
 import RFilter from "./components/RFilter"
 import RangeSlider from "./components/RangeSlider"
 import SelectedFilters from "./components/SelectedFilters"
-import { AXIOS } from "../../../../axios.config"
 export type Filter = {
 	name: string
 	type: string
@@ -25,21 +25,62 @@ export default function Search() {
 	const defaults = ["brand", "country", "weight"]
 	const [filters, setFilter] = useState<Filter[]>([])
 	const [newFilters, setNewFilters] = useState<F[]>([])
+	// useEffect(() => {
+	// 	AXIOS.get(
+	// 		`product/filter?${defaults
+	// 			.map((item) => {
+	// 				return {
+	// 					type: item,
+	// 					filters: filters.filter((e) => e.type === item).flatMap((e) => e.name)
+	// 				}
+	// 			})
+	// 			.map((e) => {
+	// 				return e.filters.length ? e.type + "=" + e.filters.map((e) => e) : null
+	// 			})
+	// 			.filter((e) => e)
+	// 			.join("&")}`
+	// 	).then((e) => setItems(e.data))
+	// }, [filters])
+	// useEffect(() => {
+	// 	AXIOS.get(
+	// 		`product/filter?${defaults
+	// 			.map((item) => {
+	// 				return {
+	// 					type: item,
+	// 					filters: filters.filter((e) => e.type === item).flatMap((e) => e.name)
+	// 				}
+	// 			})
+	// 			.map((e) => {
+	// 				return e.filters.length ? `${e.type}=${e.filters.join("&")}` : null
+	// 			})
+	// 			.filter((e) => e)
+	// 			.join("&")}`
+	// 	).then((response) => setItems(response.data as TListItem[]))
+	// }, [filters])
 	useEffect(() => {
-		AXIOS.get(
-			`product/filter?${defaults
-				.map((item) => {
-					return {
-						type: item,
-						filters: filters.filter((e) => e.type === item).flatMap((e) => e.name)
-					}
-				})
-				.map((e) => {
-					return e.filters.length ? e.type + "=" + e.filters.map((e) => e) : null
-				})
-				.filter((e) => e)
-				.join("&")}`
-		).then((e) => setItems(e.data))
+		const fetchData = async () => {
+			try {
+				const response = await AXIOS.get(
+					`product/filter?${defaults
+						.map((item) => {
+							return {
+								type: item,
+								filters: filters.filter((e) => e.type === item).flatMap((e) => e.name)
+							}
+						})
+						.map((e) => {
+							return e.filters.length ? `${e.type}=${e.filters.join("&")}` : null
+						})
+						.filter((e) => e)
+						.join("&")}`
+				)
+				setItems(response.data as TListItem[])
+			} catch (error) {
+				// Handle any errors here
+			}
+		}
+
+		fetchData()
 	}, [filters])
 
 	return (

@@ -21,7 +21,12 @@ const CommentsSection = () => {
 			{comments && (
 				<Carousel
 					input={comments.map((comment) => (
-						<Comment name={comment.name} rate={comment.rate} text={comment.text} />
+						<Comment
+							key={comment.name}
+							name={comment.name}
+							rate={comment.rate}
+							text={comment.text}
+						/>
 					))}
 				/>
 			)}

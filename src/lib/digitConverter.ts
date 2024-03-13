@@ -8,6 +8,6 @@ export const a2e = (s: string) => s.replace(/[٠-٩]/g, (d) => "٠١٢٣٤٥٦٧
 // export const e2a = (s: string) => s.replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
 export const pa2e = (s: string) => p2e(a2e(s));
 
-export const e2p = (s: string) => s.replace(/\d/g, (d: string) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d, 10)] || "");
-export const e2a = (s: string) => s.replace(/\d/g, (d: string) => "٠١٢٣٤٥٦٧٨٩"[parseInt(d, 10)] || "");
+export const e2p = (s: string) => s.replace(/\d/g, (d: string) => "۰۱۲۳۴۵۶۷۸۹"[parseInt(d, 10)] ??"");
+export const e2a = (s: string) => s.replace(/\d/g, (d: string) => "٠١٢٣٤٥٦٧٨٩"[parseInt(d, 10)] ??"");
 

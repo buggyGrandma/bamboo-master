@@ -21,7 +21,7 @@ export const DesktopHeaderCategory: React.FC = () => {
 	const [input, setInput] = useState<InputType[]>([] as InputType[])
 	useEffect(() => {
 		AXIOS.get("category/categories")
-			.then((results) => setInput(results.data))
+			.then((results) => setInput(results.data as InputType[]))
 			.catch((err) => console.error(err))
 	}, [])
 
