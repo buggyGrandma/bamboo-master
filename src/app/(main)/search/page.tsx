@@ -80,7 +80,9 @@ export default function Search() {
 			}
 		}
 
-		fetchData()
+		fetchData().catch((error) => {
+			// Handle any uncaught promise rejections here
+		})
 	}, [filters])
 
 	return (

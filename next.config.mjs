@@ -11,3 +11,9 @@
 // }
 
 // export default config
+// export const typescript = {
+// 	ignoreBuildErrors: true
+// }
+export const images = {
+	domains: ["185.19.201.5"]
+}

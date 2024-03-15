@@ -90,25 +90,18 @@ export default function SignIn() {
 			return res.data as string
 		}
 	})
-	// const handleSubmitPet: FormEventHandler<HTMLFormElement> = async (e) => {
-	// 	e.preventDefault()
-	// 	const result = addPet.mutate({
-	// 		petBirthday: "1200",
-	// 		petName,
-	// 		petType: filters[0]?.name ? filters[0].name : "",
-	// 		userName,
-	// 		account: cookies.get("account") as string
-	// 	})
-	// }
+	// eslint-disable-next-line @typescript-eslint/no-misused-promises
 	const handleSubmitPet: FormEventHandler<HTMLFormElement> = async (e) => {
 		e.preventDefault()
-		const result = addPet.mutate({
-			petBirthday: "1200",
-			petName,
-			petType: filters[0]?.name ? filters[0].name : "",
-			userName,
-			account: cookies.get("account") as string
-		})
+		const result = await Promise.resolve(
+			addPet.mutate({
+				petBirthday: "1200",
+				petName,
+				petType: filters[0]?.name ? filters[0].name : "",
+				userName,
+				account: cookies.get("account") as string
+			})
+		)
 	}
 
 	useEffect(() => {
@@ -139,7 +132,7 @@ export default function SignIn() {
 			const formData = new FormData(e.currentTarget)
 			const response = await AXIOS.post("authentication/sendOTP", {
 				account: formData.get("username")
-			}).then((res) => res.data)
+			}).then((res) => res.data as { status: string; expire: string })
 
 			if (response.status !== "ok") {
 				setLoading(false)
@@ -162,7 +155,7 @@ export default function SignIn() {
 				const response = await AXIOS.put("authentication/verifyOTP", {
 					account: account,
 					otp: otp
-				}).then((res) => res.data)
+				}).then((res) => res.data as { token: string })
 				if (response.token !== "wrong") {
 					setLoading(false)
 					setAuth(true)
@@ -295,15 +288,14 @@ export default function SignIn() {
 							<LFilters currents={filters} setCurrenrs={setFilter} />
 						</div>
 					</div>
-					{filters &&
-						filters.map((filter) => (
-							<Input
-								OnChange={setPetName}
-								key={filter.name}
-								label={`نام ${filter.name} شما`}
-								placeholder=' اسم حیوان خانگی خود را وارد کنید .'
-							/>
-						))}
+					{filters?.map((filter) => (
+						<Input
+							OnChange={setPetName}
+							key={filter.name}
+							label={`نام ${filter.name} شما`}
+							placeholder=' اسم حیوان خانگی خود را وارد کنید .'
+						/>
+					))}
 				</div>
 
 				<button

@@ -1,9 +1,8 @@
-import React from "react"
 import { Filter } from "../page"
 
 interface Props {
 	currents: Filter[]
-	setCurrenrs: (event: any) => void
+	setCurrenrs: (filters: Filter[]) => void
 }
 const SelectedFilters = ({ currents, setCurrenrs }: Props) => {
 	return (

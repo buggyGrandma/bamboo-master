@@ -1,6 +1,7 @@
 "use client"
 import { useQuery } from "@tanstack/react-query"
 import moment from "jalali-moment"
+import Image from "next/image"
 import Link from "next/link"
 import { SearchTag } from "~/components/blogPage/searchTag"
 import { PhoneHeader } from "~/components/phoneHeader"
@@ -81,7 +82,7 @@ export default function BlogsPage(props: BlogPageProps) {
 										"lg:flex-col lg:gap-4",
 										"xl:flex-row xl:gap-8"
 									)}>
-									<img
+									<Image
 										src={`${AXIOS.defaults.baseURL}file/${blog?.image}`}
 										alt=''
 										height={256}
@@ -96,7 +97,7 @@ export default function BlogsPage(props: BlogPageProps) {
 
 									<div className='flex flex-col gap-[18px]'>
 										<div className='flex items-center text-xs text-secondary xl:text-sm'>
-											<img
+											<Image
 												src={`${AXIOS.defaults.baseURL}file/${blog?.writer.image}`}
 												alt=''
 												height={40}
@@ -179,33 +180,32 @@ export default function BlogsPage(props: BlogPageProps) {
 
 							<div className='rounded-2xl bg-white lg:w-[425px] lg:border lg:border-secondary-50 lg:px-8 lg:py-12'>
 								<ul className='mt-6 flex flex-col flex-wrap gap-x-2 gap-y-4'>
-									{blogs &&
-										blogs.slice(0, 4).map((blog) => (
-											<li key={blog._id} className='flex '>
-												<img
-													src={`${AXIOS.defaults.baseURL}file/${blog?.image}`}
-													alt=''
-													height={50}
-													width={50}
-													className={cn()}
-												/>
+									{blogs?.slice(0, 4).map((blog) => (
+										<li key={blog._id} className='flex '>
+											<Image
+												src={`${AXIOS.defaults.baseURL}file/${blog?.image}`}
+												alt=''
+												height={50}
+												width={50}
+												className={cn()}
+											/>
 
-												<div>
-													<h3 className='text-xs text-secondary xl:text-sm'>
-														{blog.title}
-													</h3>
-													<div className='ms-auto'>
-														<span dir='ltr'>
-															{e2p(
-																moment(blog?.date, "YYYY/MM/DD")
-																	.locale("fa")
-																	.format("YYYY/M/D - HH:mm")
-															)}
-														</span>
-													</div>
+											<div>
+												<h3 className='text-xs text-secondary xl:text-sm'>
+													{blog.title}
+												</h3>
+												<div className='ms-auto'>
+													<span dir='ltr'>
+														{e2p(
+															moment(blog?.date, "YYYY/MM/DD")
+																.locale("fa")
+																.format("YYYY/M/D - HH:mm")
+														)}
+													</span>
 												</div>
-											</li>
-										))}
+											</div>
+										</li>
+									))}
 								</ul>
 							</div>
 						</section>

@@ -93,16 +93,17 @@ export const InfoSection = ({
 
 		setActiveSection(newActiveSection)
 	}, [activeSection, commentsIsInView, descriptionIsInView, specsIsInView])
+	// eslint-disable-next-line @typescript-eslint/no-misused-promises
 	const handleSubmitComment = async () => {
-		const result = addComment.mutate({
-			text,
-			id: _id,
-			rate,
-			type: "product",
-			account: cookies.get("account") as string
-		})
-
-		console.log("Result data:", result)
+		const result = await Promise.resolve(
+			addComment.mutate({
+				text,
+				id: _id,
+				rate,
+				type: "product",
+				account: cookies.get("account") as string
+			})
+		)
 	}
 	return (
 		<div className='pt-8 lg:p-10 lg:pt-7'>
@@ -152,6 +153,7 @@ export const InfoSection = ({
 					<div className='relative'>
 						<button
 							className='absolute left-4 top-5 z-10 flex items-center justify-center gap-2 rounded-md border-2 border-primary bg-white px-12 py-2 text-primary'
+							// eslint-disable-next-line @typescript-eslint/no-misused-promises
 							onClick={handleSubmitComment}>
 							<SendComment />
 							ارسال نظر
@@ -165,32 +167,31 @@ export const InfoSection = ({
 					</div>
 					<div className='mt-8 flex flex-col gap-5 text-base font-normal text-stone-600'>
 						<p className='mb-5 font-bold'>دیدگاه های شما :</p>
-						{comments &&
-							comments.map((comment, i) => (
-								<div key={i} className='flex justify-between '>
-									<div className='flex w-full gap-2'>
-										<div className='h-[40px] w-[40px] rounded-full bg-stone-700' />
-										<div className='flex w-full flex-col'>
-											<p>{comment.name}</p>
-											<p className='text-xs text-stone-400 '>
-												{moment(comment.date, "YYYY/MM/DD").format("YYYY/M/DD")}
-											</p>
-											<p className='mt-3  text-xs'>{comment.text}</p>
-										</div>
-									</div>
-									<div className='w-fit'>
-										<div className='flex gap-1 text-xs'>
-											{new Array(5).fill(0).map((_, i) => (
-												<Star
-													key={i}
-													className={`${i >= comment.rate ? "text-gray-400" : "text-yellow-400"} `}
-												/>
-											))}
-										</div>
-										<p className='mt-3 text-xs'>امتیازدهی {comment.rate} از 5 </p>
+						{comments?.map((comment, i) => (
+							<div key={i} className='flex justify-between '>
+								<div className='flex w-full gap-2'>
+									<div className='h-[40px] w-[40px] rounded-full bg-stone-700' />
+									<div className='flex w-full flex-col'>
+										<p>{comment.name}</p>
+										<p className='text-xs text-stone-400 '>
+											{moment(comment.date, "YYYY/MM/DD").format("YYYY/M/DD")}
+										</p>
+										<p className='mt-3  text-xs'>{comment.text}</p>
 									</div>
 								</div>
-							))}
+								<div className='w-fit'>
+									<div className='flex gap-1 text-xs'>
+										{new Array(5).fill(0).map((_, i) => (
+											<Star
+												key={i}
+												className={`${i >= comment.rate ? "text-gray-400" : "text-yellow-400"} `}
+											/>
+										))}
+									</div>
+									<p className='mt-3 text-xs'>امتیازدهی {comment.rate} از 5 </p>
+								</div>
+							</div>
+						))}
 					</div>
 				</div>
 			</div>

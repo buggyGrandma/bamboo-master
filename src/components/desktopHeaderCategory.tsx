@@ -1,5 +1,6 @@
 "use client"
 import { Popover, Tab } from "@headlessui/react"
+import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import Arrow from "~/lib/icons/arrow"
@@ -45,7 +46,7 @@ export const DesktopHeaderCategory: React.FC = () => {
 								<Tab
 									key={item.animal}
 									className='flex min-w-[192px] items-center gap-4 border-b border-l border-secondary-50 px-8 py-4 text-sm text-secondary outline-none last:border-b-0 ui-selected:bg-secondary-50 ui-selected:text-primary'>
-									<img
+									<Image
 										width={30}
 										height={30}
 										src={`${AXIOS.defaults.baseURL}file/${item.animalIcon}`}

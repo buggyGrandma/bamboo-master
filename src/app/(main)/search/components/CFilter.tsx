@@ -11,7 +11,7 @@ interface Props {
 	options: string[][]
 	search?: boolean
 	searchPlaceHilder?: string
-	onChange: (event: any) => void
+	onChange: (filters: Filter[]) => void
 	currents: Filter[]
 	type: string
 }

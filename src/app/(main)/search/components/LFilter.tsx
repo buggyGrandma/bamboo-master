@@ -2,7 +2,7 @@ import { Filter } from "../page"
 
 interface Props {
 	currents: Filter[]
-	setCurrenrs: (event: any) => void
+	setCurrenrs: (filters: Filter[]) => void
 }
 const LFilters = ({ currents, setCurrenrs }: Props) => {
 	return (

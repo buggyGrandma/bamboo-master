@@ -1,6 +1,6 @@
 "use client"
 import { Disclosure, RadioGroup } from "@headlessui/react"
-import React, { useState } from "react"
+import { useState } from "react"
 import Arrow from "~/lib/icons/arrow"
 import { cn } from "~/lib/utils"
 import { Filter } from "../page"
@@ -10,6 +10,7 @@ interface Props {
 	options: string[]
 	currents: Filter[]
 	type: string
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	onChange: (item: any) => void
 }
 const RFilter = ({ title, options, currents, onChange, type }: Props) => {

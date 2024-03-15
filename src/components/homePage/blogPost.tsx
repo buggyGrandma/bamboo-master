@@ -1,3 +1,4 @@
+import Image from "next/image"
 import Link from "next/link"
 import { FC } from "react"
 import { AXIOS } from "../../../axios.config"
@@ -11,9 +12,12 @@ export type TBlogPost = {
 const BlogPost: FC<TBlogPost> = ({ title, image, summery, _id }) => {
 	return (
 		<div className=' flex h-[424px] w-[424px] flex-col gap-6 rounded-3xl bg-white p-7 shadow-lg'>
-			<img
+			<Image
+				width={257}
+				height={254}
 				className='h-[202px] w-full rounded-lg'
 				src={`${AXIOS.defaults.baseURL}file/${image}`}
+				alt=''
 			/>
 
 			<p className='text-lg font-semibold text-primary'>{title} </p>

@@ -1,5 +1,6 @@
 "use client"
 import { useQuery } from "@tanstack/react-query"
+import Image from "next/image"
 import { AXIOS } from "../../../axios.config"
 import { InputType } from "../desktopHeaderCategory"
 
@@ -21,7 +22,9 @@ const CategorySection = () => {
 					.map((category) => {
 						return (
 							<div key={category.title} className='flex flex-col items-center gap-5 '>
-								<img
+								<Image
+									width={200}
+									height={200}
 									className='h-[200px] w-[200px] justify-items-center rounded-full'
 									src={`${AXIOS.defaults.baseURL}file/${category.subcategoryIcon ? category.subcategoryIcon : category.icon}`}
 									alt={category.title}

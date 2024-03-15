@@ -1,4 +1,5 @@
 import moment from "jalali-moment"
+import Image from "next/image"
 import { FC } from "react"
 import Markdown from "react-markdown"
 import { e2p } from "~/lib/digitConverter"
@@ -18,7 +19,7 @@ type Props = {
 const Blog: FC<Props> = ({ date, image, tags, text, title, writer }) => {
 	return (
 		<>
-			<img
+			<Image
 				src={`${AXIOS.defaults.baseURL}file/${image}`}
 				alt=''
 				height={800}
@@ -28,7 +29,7 @@ const Blog: FC<Props> = ({ date, image, tags, text, title, writer }) => {
 
 			<div className='mt-6 flex flex-col gap-4 md:flex-col-reverse lg:flex-col xl:flex-col-reverse'>
 				<div className='flex items-center text-xs font-medium text-secondary md:text-sm lg:text-xs xl:text-sm'>
-					<img
+					<Image
 						src={`${AXIOS.defaults.baseURL}file/${writer.image}`}
 						alt=''
 						height={40}
